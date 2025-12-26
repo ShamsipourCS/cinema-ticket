@@ -14,5 +14,5 @@ public class User : AuditableEntity
     
     // Navigation Properties
     public ICollection<RefreshToken> RefreshTokens { get; set; } = new List<RefreshToken>();
-    // public ICollection<Ticket> Tickets { get; set; } = new List<Ticket>();
+    public ICollection<Ticket> Tickets { get; set; } = new List<Ticket>();
 }
