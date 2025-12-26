@@ -14,5 +14,5 @@ public class Movie : AuditableEntity
     public bool IsActive { get; set; }
 
     // Navigation Properties
-    // public ICollection<Showtime> Showtimes { get; set; } = new List<Showtime>();
+    public ICollection<Showtime> Showtimes { get; set; } = new List<Showtime>();
 }
