@@ -13,5 +13,5 @@ public class Hall : BaseEntity
     // Navigation Properties
     public Cinema? Cinema { get; set; }
     public ICollection<Seat> Seats { get; set; } = new List<Seat>();
-    // public ICollection<Showtime> Showtimes { get; set; } = new List<Showtime>();
+    public ICollection<Showtime> Showtimes { get; set; } = new List<Showtime>();
 }
