@@ -13,6 +13,6 @@ public class User : AuditableEntity
     public UserRole Role { get; set; } = UserRole.User;
     
     // Navigation Properties
+    public ICollection<RefreshToken> RefreshTokens { get; set; } = new List<RefreshToken>();
     // public ICollection<Ticket> Tickets { get; set; } = new List<Ticket>();
-    // public ICollection<RefreshToken> RefreshTokens { get; set; } = new List<RefreshToken>();
 }
