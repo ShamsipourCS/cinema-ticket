@@ -9,6 +9,12 @@ namespace CinemaTicket.Persistence;
 
 public static class DependencyInjection
 {
+    /// <summary>
+    /// Adds persistence-related services to the dependency injection container.
+    /// </summary>
+    /// <param name="services">The service collection.</param>
+    /// <param name="configuration">The application configuration.</param>
+    /// <returns>The service collection for chaining.</returns>
     public static IServiceCollection AddPersistence(this IServiceCollection services, IConfiguration configuration)
     {
         services.AddDbContext<ApplicationDbContext>(options =>
