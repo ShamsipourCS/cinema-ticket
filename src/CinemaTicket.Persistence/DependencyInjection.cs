@@ -17,13 +17,17 @@ public static class DependencyInjection
     /// <returns>The service collection for chaining.</returns>
     public static IServiceCollection AddPersistence(this IServiceCollection services, IConfiguration configuration)
     {
+        // Register DbContext
         services.AddDbContext<ApplicationDbContext>(options =>
             options.UseSqlServer(configuration.GetConnectionString("DefaultConnection")));
 
+        // Register Unit of Work - this provides access to all repositories
+        // ApplicationDbContext implements IUnitOfWork and creates repositories internally
         services.AddScoped<IUnitOfWork>(provider => provider.GetRequiredService<ApplicationDbContext>());
-        
-        services.AddScoped(typeof(IRepository<>), typeof(GenericRepository<>));
-        services.AddScoped<IUserRepository, UserRepository>();
+
+        // Note: Individual repositories are NOT registered in DI container
+        // They are created by ApplicationDbContext as needed (lazy initialization)
+        // Access repositories through IUnitOfWork.Users, IUnitOfWork.Movies, etc.
 
         return services;
     }

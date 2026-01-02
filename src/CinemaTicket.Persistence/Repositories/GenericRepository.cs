@@ -12,13 +12,14 @@ using Microsoft.EntityFrameworkCore;
 namespace CinemaTicket.Persistence.Repositories;
 
 /// <summary>
-/// Generic implementation of the IRepository interface for EF Core.
+/// Base repository implementation providing common data access operations.
+/// NOTE: This repository does NOT call SaveChangesAsync - that's the responsibility of IUnitOfWork.
 /// </summary>
-/// <typeparam name="T">The type of the entity.</typeparam>
+/// <typeparam name="T">Entity type inheriting from BaseEntity</typeparam>
 public class GenericRepository<T> : IRepository<T> where T : BaseEntity
 {
-    protected readonly ApplicationDbContext _context;
     private readonly DbSet<T> _dbSet;
+    protected readonly DbContext _context;
 
     /// <summary>
     /// Initializes a new instance of the GenericRepository class.

@@ -5,32 +5,39 @@ using System.Threading.Tasks;
 namespace CinemaTicket.Application.Common.Interfaces;
 
 /// <summary>
-/// Interface for the Unit of Work pattern to manage database transactions and save changes.
+/// Coordinates work across multiple repositories and provides transaction support.
+/// This is the single entry point for data access operations.
 /// </summary>
 public interface IUnitOfWork : IDisposable
 {
+    // Repository Access - Add properties as repositories are created
+    IUserRepository Users { get; }
+    // IMovieRepository Movies { get; }
+    // ICinemaRepository Cinemas { get; }
+    // IHallRepository Halls { get; }
+    // IShowtimeRepository Showtimes { get; }
+    // ITicketRepository Tickets { get; }
+    // IPaymentRepository Payments { get; }
+
     /// <summary>
-    /// Saves all changes made in this unit of work to the database asynchronously.
+    /// Saves all pending changes to the database.
+    /// Call this after all repository operations are complete.
     /// </summary>
-    /// <param name="cancellationToken">The cancellation token.</param>
-    /// <returns>The number of state entries written to the database.</returns>
     Task<int> SaveChangesAsync(CancellationToken cancellationToken = default);
-    
-    /// <summary>
-    /// Begins a new database transaction asynchronously.
-    /// </summary>
-    /// <returns>A task representing the asynchronous operation.</returns>
-    Task BeginTransactionAsync();
 
     /// <summary>
-    /// Commits the current database transaction asynchronously.
+    /// Begins a database transaction for multiple operations.
+    /// Use when you need all-or-nothing behavior across SaveChanges calls.
     /// </summary>
-    /// <returns>A task representing the asynchronous operation.</returns>
-    Task CommitTransactionAsync();
+    Task BeginTransactionAsync(CancellationToken cancellationToken = default);
 
     /// <summary>
-    /// Rolls back the current database transaction asynchronously.
+    /// Commits the current transaction.
     /// </summary>
-    /// <returns>A task representing the asynchronous operation.</returns>
-    Task RollbackTransactionAsync();
+    Task CommitTransactionAsync(CancellationToken cancellationToken = default);
+
+    /// <summary>
+    /// Rolls back the current transaction.
+    /// </summary>
+    Task RollbackTransactionAsync(CancellationToken cancellationToken = default);
 }

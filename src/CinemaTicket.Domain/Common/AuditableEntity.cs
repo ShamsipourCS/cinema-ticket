@@ -10,5 +10,5 @@ public abstract class AuditableEntity : BaseEntity
     /// <summary>
     /// Gets or sets the date and time when the entity was created.
     /// </summary>
-    public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
+    public DateTime CreatedAt { get; set; }
 }
