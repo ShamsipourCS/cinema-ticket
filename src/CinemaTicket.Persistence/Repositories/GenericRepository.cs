@@ -13,7 +13,7 @@ namespace CinemaTicket.Persistence.Repositories;
 
 public class GenericRepository<T> : IRepository<T> where T : BaseEntity
 {
-    private readonly ApplicationDbContext _context;
+    protected readonly ApplicationDbContext _context;
     private readonly DbSet<T> _dbSet;
 
     public GenericRepository(ApplicationDbContext context)
