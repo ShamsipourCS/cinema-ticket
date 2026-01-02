@@ -9,10 +9,17 @@ using Microsoft.IdentityModel.Tokens;
 
 namespace CinemaTicket.Infrastructure.Services;
 
+/// <summary>
+/// Implementation of the IJwtService for handling JWT token generation and validation.
+/// </summary>
 public class JwtService : IJwtService
 {
     private readonly IConfiguration _configuration;
 
+    /// <summary>
+    /// Initializes a new instance of the JwtService class.
+    /// </summary>
+    /// <param name="configuration">The application configuration.</param>
     public JwtService(IConfiguration configuration)
     {
         _configuration = configuration;

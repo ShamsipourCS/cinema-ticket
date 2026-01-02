@@ -5,32 +5,50 @@ using Microsoft.EntityFrameworkCore;
 
 namespace CinemaTicket.Persistence.Context;
 
+/// <summary>
+/// Entity Framework Core database context for the cinema ticket booking system.
+/// Implements the IUnitOfWork interface for managing database transactions.
+/// </summary>
 public class ApplicationDbContext : DbContext, IUnitOfWork
 {
+    /// <summary>
+    /// Initializes a new instance of the ApplicationDbContext class.
+    /// </summary>
+    /// <param name="options">The database context options.</param>
     public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
         : base(options)
     {
     }
 
-    // DbSets will be added here as entities are created by the team
+    /// <summary>
+    /// Gets or sets the Users database set.
+    /// </summary>
     public DbSet<User> Users { get; set; }
+
+    /// <summary>
+    /// Gets or sets the RefreshTokens database set.
+    /// </summary>
     public DbSet<RefreshToken> RefreshTokens { get; set; }
 
+    /// <inheritdoc />
     public async Task BeginTransactionAsync()
     {
         await Database.BeginTransactionAsync();
     }
 
+    /// <inheritdoc />
     public async Task CommitTransactionAsync()
     {
         await Database.CommitTransactionAsync();
     }
 
+    /// <inheritdoc />
     public async Task RollbackTransactionAsync()
     {
         await Database.RollbackTransactionAsync();
     }
     
+    /// <inheritdoc />
     public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
     {
         var entries = ChangeTracker.Entries<AuditableEntity>();

@@ -11,11 +11,19 @@ using Microsoft.EntityFrameworkCore;
 
 namespace CinemaTicket.Persistence.Repositories;
 
+/// <summary>
+/// Generic implementation of the IRepository interface for EF Core.
+/// </summary>
+/// <typeparam name="T">The type of the entity.</typeparam>
 public class GenericRepository<T> : IRepository<T> where T : BaseEntity
 {
     protected readonly ApplicationDbContext _context;
     private readonly DbSet<T> _dbSet;
 
+    /// <summary>
+    /// Initializes a new instance of the GenericRepository class.
+    /// </summary>
+    /// <param name="context">The database context.</param>
     public GenericRepository(ApplicationDbContext context)
     {
         _context = context;
