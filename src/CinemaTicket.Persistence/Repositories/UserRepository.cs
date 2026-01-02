@@ -13,7 +13,8 @@ public class UserRepository : GenericRepository<User>, IUserRepository
 
     public async Task<User?> GetByEmailAsync(string email, CancellationToken cancellationToken = default)
     {
-        return await _context.Users
+        // Use _context.Set<User>() instead of _context.Users to work with abstract DbContext
+        return await _context.Set<User>()
             .AsNoTracking()
             .FirstOrDefaultAsync(u => u.Email == email, cancellationToken);
     }
