@@ -5,7 +5,7 @@ namespace CinemaTicket.Domain.Entities;
 /// <summary>
 /// Represents a refresh token for a user session.
 /// </summary>
-public class RefreshToken : BaseEntity
+public class RefreshToken : AuditableEntity
 {
     /// <summary>
     /// Gets or sets the ID of the user this token belongs to.

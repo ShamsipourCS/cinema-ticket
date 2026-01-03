@@ -26,6 +26,9 @@ public class RefreshTokenConfiguration : IEntityTypeConfiguration<RefreshToken>
         builder.Property(rt => rt.UserId)
             .IsRequired();
 
+        builder.Property(rt => rt.CreatedAt)
+            .IsRequired();
+
         // Unique index to ensure tokens are globally unique
         builder.HasIndex(rt => rt.Token)
             .IsUnique();
