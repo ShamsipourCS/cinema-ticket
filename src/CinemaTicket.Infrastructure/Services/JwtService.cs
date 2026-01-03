@@ -18,6 +18,9 @@ public class JwtService : IJwtService
     private readonly IConfiguration _configuration;
     private readonly ILogger<JwtService> _logger;
 
+    private const int DefaultExpirationMinutes = 60;
+    private const int MinimumKeyLength = 32;
+
     /// <summary>
     /// Initializes a new instance of the JwtService class.
     /// </summary>
@@ -27,6 +30,9 @@ public class JwtService : IJwtService
     {
         _configuration = configuration;
         _logger = logger;
+
+        // Validate configuration on startup
+        ValidateConfiguration();
     }
 
     public string GenerateToken(User user)
@@ -46,7 +52,7 @@ public class JwtService : IJwtService
         var tokenDescriptor = new SecurityTokenDescriptor
         {
             Subject = new ClaimsIdentity(claims),
-            Expires = DateTime.UtcNow.AddMinutes(double.Parse(_configuration["JwtSettings:ExpirationInMinutes"]!)),
+            Expires = DateTime.UtcNow.AddMinutes(GetExpirationMinutes()),
             Issuer = _configuration["JwtSettings:Issuer"],
             Audience = _configuration["JwtSettings:Audience"],
             SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
@@ -100,5 +106,40 @@ public class JwtService : IJwtService
             _logger.LogError(ex, "Unexpected error validating expired token");
             throw;
         }
+    }
+
+    private void ValidateConfiguration()
+    {
+        var secret = _configuration["JwtSettings:Secret"];
+        if (string.IsNullOrEmpty(secret))
+            throw new InvalidOperationException("JwtSettings:Secret is required");
+
+        if (secret.Length < MinimumKeyLength)
+            throw new InvalidOperationException($"JwtSettings:Secret must be at least {MinimumKeyLength} characters");
+
+        if (string.IsNullOrEmpty(_configuration["JwtSettings:Issuer"]))
+            throw new InvalidOperationException("JwtSettings:Issuer is required");
+
+        if (string.IsNullOrEmpty(_configuration["JwtSettings:Audience"]))
+            throw new InvalidOperationException("JwtSettings:Audience is required");
+    }
+
+    private int GetExpirationMinutes()
+    {
+        var expirationString = _configuration["JwtSettings:ExpirationInMinutes"];
+        if (string.IsNullOrEmpty(expirationString))
+        {
+            _logger.LogWarning("JwtSettings:ExpirationInMinutes not configured, using default: {DefaultMinutes}", DefaultExpirationMinutes);
+            return DefaultExpirationMinutes;
+        }
+
+        if (!int.TryParse(expirationString, out var minutes) || minutes <= 0)
+        {
+            _logger.LogWarning("Invalid JwtSettings:ExpirationInMinutes value: {Value}, using default: {DefaultMinutes}",
+                expirationString, DefaultExpirationMinutes);
+            return DefaultExpirationMinutes;
+        }
+
+        return minutes;
     }
 }
