@@ -12,6 +12,7 @@ public interface IUnitOfWork : IDisposable
 {
     // Repository Access - Add properties as repositories are created
     IUserRepository Users { get; }
+    IRefreshTokenRepository RefreshTokens { get; }
     // IMovieRepository Movies { get; }
     // ICinemaRepository Cinemas { get; }
     // IHallRepository Halls { get; }

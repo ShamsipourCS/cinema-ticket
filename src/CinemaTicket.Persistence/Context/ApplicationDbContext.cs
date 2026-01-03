@@ -33,9 +33,11 @@ public class ApplicationDbContext : DbContext, IUnitOfWork
 
     // Repository instances - lazily initialized
     private IUserRepository? _userRepository;
+    private IRefreshTokenRepository? _refreshTokenRepository;
 
     // IUnitOfWork Repository Properties
     IUserRepository IUnitOfWork.Users => _userRepository ??= new UserRepository(this);
+    IRefreshTokenRepository IUnitOfWork.RefreshTokens => _refreshTokenRepository ??= new RefreshTokenRepository(this);
 
     /// <inheritdoc />
     public async Task BeginTransactionAsync(CancellationToken cancellationToken = default)
