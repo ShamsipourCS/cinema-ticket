@@ -5,6 +5,7 @@ using System.Text;
 using CinemaTicket.Application.Common.Interfaces;
 using CinemaTicket.Domain.Entities;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
 
 namespace CinemaTicket.Infrastructure.Services;
@@ -15,21 +16,26 @@ namespace CinemaTicket.Infrastructure.Services;
 public class JwtService : IJwtService
 {
     private readonly IConfiguration _configuration;
+    private readonly ILogger<JwtService> _logger;
 
     /// <summary>
     /// Initializes a new instance of the JwtService class.
     /// </summary>
     /// <param name="configuration">The application configuration.</param>
-    public JwtService(IConfiguration configuration)
+    /// <param name="logger">The logger instance.</param>
+    public JwtService(IConfiguration configuration, ILogger<JwtService> logger)
     {
         _configuration = configuration;
+        _logger = logger;
     }
 
     public async Task<string> GenerateToken(User user)
     {
+        _logger.LogDebug("Generating JWT token for user {UserId}", user.Id);
+
         var tokenHandler = new JwtSecurityTokenHandler();
         var key = Encoding.ASCII.GetBytes(_configuration["JwtSettings:Secret"]!);
-        
+
         var claims = new List<Claim>
         {
             new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
@@ -47,6 +53,7 @@ public class JwtService : IJwtService
         };
 
         var token = tokenHandler.CreateToken(tokenDescriptor);
+        _logger.LogDebug("Successfully generated JWT token for user {UserId}", user.Id);
         return await Task.FromResult(tokenHandler.WriteToken(token));
     }
 
@@ -83,9 +90,15 @@ public class JwtService : IJwtService
 
             return principal;
         }
-        catch
+        catch (SecurityTokenException ex)
         {
+            _logger.LogWarning(ex, "Invalid security token provided");
             return null;
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Unexpected error validating expired token");
+            throw;
         }
     }
 }
