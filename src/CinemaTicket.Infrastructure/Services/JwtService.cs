@@ -29,7 +29,7 @@ public class JwtService : IJwtService
         _logger = logger;
     }
 
-    public async Task<string> GenerateToken(User user)
+    public string GenerateToken(User user)
     {
         _logger.LogDebug("Generating JWT token for user {UserId}", user.Id);
 
@@ -54,7 +54,7 @@ public class JwtService : IJwtService
 
         var token = tokenHandler.CreateToken(tokenDescriptor);
         _logger.LogDebug("Successfully generated JWT token for user {UserId}", user.Id);
-        return await Task.FromResult(tokenHandler.WriteToken(token));
+        return tokenHandler.WriteToken(token);
     }
 
     public string GenerateRefreshToken()

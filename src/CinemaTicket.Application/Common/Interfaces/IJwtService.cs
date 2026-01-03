@@ -15,7 +15,7 @@ public interface IJwtService
     /// </summary>
     /// <param name="user">The user to generate the token for.</param>
     /// <returns>A JWT token string.</returns>
-    Task<string> GenerateToken(User user);
+    string GenerateToken(User user);
 
     /// <summary>
     /// Generates a cryptographically strong random refresh token.
