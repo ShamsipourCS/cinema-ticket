@@ -24,4 +24,12 @@ public class UserRepository : GenericRepository<User>, IUserRepository
             .AsNoTracking()
             .FirstOrDefaultAsync(u => u.Email == email, cancellationToken);
     }
+
+    public async Task<User?> GetByEmailWithRefreshTokensAsync(string email, CancellationToken cancellationToken = default)
+    {
+        return await _context.Set<User>()
+            .AsNoTracking()
+            .Include(u => u.RefreshTokens)
+            .FirstOrDefaultAsync(u => u.Email == email, cancellationToken);
+    }
 }
