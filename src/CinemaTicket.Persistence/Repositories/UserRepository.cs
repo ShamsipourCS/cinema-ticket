@@ -22,7 +22,7 @@ public class UserRepository : GenericRepository<User>, IUserRepository
     {
         return await _context.Set<User>()
             .AsNoTracking()
-            .FirstOrDefaultAsync(u => u.Email == email, cancellationToken);
+            .FirstOrDefaultAsync(u => u.Email.ToLower() == email.ToLower(), cancellationToken);
     }
 
     public async Task<User?> GetByEmailWithRefreshTokensAsync(string email, CancellationToken cancellationToken = default)
@@ -30,6 +30,6 @@ public class UserRepository : GenericRepository<User>, IUserRepository
         return await _context.Set<User>()
             .AsNoTracking()
             .Include(u => u.RefreshTokens)
-            .FirstOrDefaultAsync(u => u.Email == email, cancellationToken);
+            .FirstOrDefaultAsync(u => u.Email.ToLower() == email.ToLower(), cancellationToken);
     }
 }
