@@ -32,9 +32,9 @@ public class User : AuditableEntity
     public string LastName { get; set; } = string.Empty;
 
     /// <summary>
-    /// Gets or sets the user's phone number.
+    /// Gets or sets the user's phone number (optional).
     /// </summary>
-    public string Phone { get; set; } = string.Empty;
+    public string? Phone { get; set; }
 
     /// <summary>
     /// Gets or sets the role assigned to the user.

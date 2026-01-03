@@ -33,7 +33,6 @@ public class UserConfiguration : IEntityTypeConfiguration<User>
             .HasMaxLength(100);
 
         builder.Property(u => u.Phone)
-            .IsRequired()
             .HasMaxLength(20);
 
         builder.Property(u => u.Role)
