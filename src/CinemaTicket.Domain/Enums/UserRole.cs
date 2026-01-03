@@ -8,7 +8,7 @@ public enum UserRole
     /// <summary>
     /// A regular customer who can book tickets.
     /// </summary>
-    User = 0,
+    Customer = 0,
 
     /// <summary>
     /// An administrator who can manage cinemas, movies, and showtimes.

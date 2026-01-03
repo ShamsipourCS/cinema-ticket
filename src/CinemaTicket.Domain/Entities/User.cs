@@ -39,7 +39,7 @@ public class User : AuditableEntity
     /// <summary>
     /// Gets or sets the role assigned to the user.
     /// </summary>
-    public UserRole Role { get; set; } = UserRole.User;
+    public UserRole Role { get; set; } = UserRole.Customer;
     
     /// <summary>
     /// Gets or sets the collection of refresh tokens associated with the user.
