@@ -12,7 +12,16 @@ namespace CinemaTicket.Infrastructure.Services;
 
 /// <summary>
 /// Implementation of the IJwtService for handling JWT token generation and validation.
+/// Uses HS256 symmetric key encryption with configurable expiration and strict validation.
+/// All tokens use UTC timestamps to ensure consistency across time zones.
 /// </summary>
+/// <remarks>
+/// Security considerations:
+/// - Secret key must be at least 32 characters for HS256 security
+/// - Issuer and audience validation prevent token reuse across applications
+/// - Algorithm validation uses case-sensitive comparison to prevent bypass attacks
+/// - Refresh tokens use cryptographically secure random number generation
+/// </remarks>
 public class JwtService : IJwtService
 {
     private readonly IConfiguration _configuration;
@@ -35,6 +44,20 @@ public class JwtService : IJwtService
         ValidateConfiguration();
     }
 
+    /// <summary>
+    /// Generates a JWT access token for the specified user.
+    /// </summary>
+    /// <param name="user">The user to generate the token for.</param>
+    /// <returns>A signed JWT token string containing user claims (ID, email, role).</returns>
+    /// <remarks>
+    /// Token includes:
+    /// - User ID (NameIdentifier claim)
+    /// - Email address (Email claim)
+    /// - User role (Role claim)
+    /// - Expiration timestamp in UTC (configurable, defaults to 60 minutes)
+    /// - Issuer and Audience for validation
+    /// Token is signed using HS256 algorithm with the configured secret key.
+    /// </remarks>
     public string GenerateToken(User user)
     {
         _logger.LogDebug("Generating JWT token for user {UserId}", user.Id);
@@ -63,6 +86,16 @@ public class JwtService : IJwtService
         return tokenHandler.WriteToken(token);
     }
 
+    /// <summary>
+    /// Generates a cryptographically secure random refresh token.
+    /// </summary>
+    /// <returns>A base64-encoded 256-bit random token string.</returns>
+    /// <remarks>
+    /// Uses RandomNumberGenerator (cryptographically secure RNG) to generate
+    /// a 32-byte (256-bit) random value, then base64-encodes it for storage.
+    /// This token should be stored with a user reference and expiration time
+    /// in the database, and must be globally unique (enforced by unique index).
+    /// </remarks>
     public string GenerateRefreshToken()
     {
         var randomNumber = new byte[32];
@@ -71,6 +104,24 @@ public class JwtService : IJwtService
         return Convert.ToBase64String(randomNumber);
     }
 
+    /// <summary>
+    /// Validates an expired JWT token and extracts the claims principal.
+    /// </summary>
+    /// <param name="token">The expired JWT token to validate.</param>
+    /// <returns>
+    /// The ClaimsPrincipal extracted from the token if validation succeeds,
+    /// or null if the token is invalid or malformed.
+    /// </returns>
+    /// <remarks>
+    /// This method is specifically designed for refresh token flows where the
+    /// access token has expired but we still need to verify it was legitimately
+    /// issued by this application. Validation includes:
+    /// - Issuer and Audience verification (prevents cross-application token reuse)
+    /// - Signature verification (ensures token wasn't tampered with)
+    /// - Algorithm verification using case-sensitive comparison (prevents algorithm confusion attacks)
+    /// - Lifetime validation is DISABLED (since we expect expired tokens)
+    /// Returns null on SecurityTokenException (logs warning), throws on unexpected errors.
+    /// </remarks>
     public ClaimsPrincipal? GetPrincipalFromExpiredToken(string token)
     {
         var tokenValidationParameters = new TokenValidationParameters
