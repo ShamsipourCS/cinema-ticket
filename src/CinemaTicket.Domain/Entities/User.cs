@@ -1,3 +1,4 @@
+using System.ComponentModel.DataAnnotations;
 using CinemaTicket.Domain.Common;
 using CinemaTicket.Domain.Enums;
 
@@ -10,7 +11,9 @@ public class User : AuditableEntity
 {
     /// <summary>
     /// Gets or sets the user's email address.
+    /// Must be a valid email format.
     /// </summary>
+    [EmailAddress]
     public string Email { get; set; } = string.Empty;
 
     /// <summary>
