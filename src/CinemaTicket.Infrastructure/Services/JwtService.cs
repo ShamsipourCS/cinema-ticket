@@ -62,8 +62,10 @@ public class JwtService : IJwtService
     {
         var tokenValidationParameters = new TokenValidationParameters
         {
-            ValidateAudience = false, // You might want to validate audience/issuer here too depending on requirements
-            ValidateIssuer = false,
+            ValidateAudience = true,
+            ValidateIssuer = true,
+            ValidIssuer = _configuration["JwtSettings:Issuer"],
+            ValidAudience = _configuration["JwtSettings:Audience"],
             ValidateIssuerSigningKey = true,
             IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["JwtSettings:Secret"]!)),
             ValidateLifetime = false // Here we are validating an expired token
