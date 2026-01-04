@@ -1,6 +1,7 @@
 using CinemaTicket.Application.Common.Interfaces;
 using CinemaTicket.Domain.Common;
 using Microsoft.EntityFrameworkCore;
+using CinemaTicket.Domain.Entities;
 
 namespace CinemaTicket.Persistence.Context;
 
@@ -11,8 +12,11 @@ public class ApplicationDbContext : DbContext, IUnitOfWork
     {
     }
 
-    // DbSets will be added here as entities are created by the team
-    // public DbSet<Movie> Movies { get; set; }
+    public DbSet<Movie> Movies => Set<Movie>();
+    public DbSet<Cinema> Cinemas => Set<Cinema>();
+    public DbSet<Hall> Halls => Set<Hall>();
+    public DbSet<Seat> Seats => Set<Seat>();
+
 
     public async Task BeginTransactionAsync()
     {
