@@ -14,6 +14,7 @@ namespace CinemaTicket.Persistence.Configurations
             // Primary key
             builder.HasKey(m => m.Id);
 
+
             // Properties
             builder.Property(m => m.Title)
                 .IsRequired()
