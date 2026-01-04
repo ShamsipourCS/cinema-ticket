@@ -3,10 +3,12 @@
   <ItemGroup>
     <ProjectReference Include="..\CinemaTicket.Application\CinemaTicket.Application.csproj" />
     <ProjectReference Include="..\CinemaTicket.Domain\CinemaTicket.Domain.csproj" />
+    <ProjectReference Include="..\CinemaTicket.Persistence\CinemaTicket.Persistence.csproj" />
   </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="7.0.14" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="7.0.14" />
     <PackageReference Include="Microsoft.Extensions.Configuration" Version="7.0.0" />
     <PackageReference Include="Microsoft.Extensions.Configuration.EnvironmentVariables" Version="7.0.0" />
     <PackageReference Include="Microsoft.Extensions.Configuration.FileExtensions" Version="7.0.0" />
