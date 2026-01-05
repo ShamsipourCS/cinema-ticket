@@ -43,8 +43,10 @@ namespace CinemaTicket.Persistence.Configurations
 
             // Relationships
             builder.HasMany(m => m.Showtimes)
-                .WithOne(s => s.Movie)
-                .HasForeignKey(s => s.MovieId);
+                    .WithOne(s => s.Movie)
+                    .HasForeignKey(s => s.MovieId)
+                    .OnDelete(DeleteBehavior.Restrict);
+
         }
     }
 }
