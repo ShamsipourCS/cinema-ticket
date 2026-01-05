@@ -1,31 +1,27 @@
 ﻿using CinemaTicket.Application.Common.Interfaces;
-using CinemaTicket.Domain.Entities;
 using MediatR;
-using Microsoft.EntityFrameworkCore;
 
 namespace CinemaTicket.Application.Features.Cinemas.Commands.DeleteCinema;
 
 public sealed class DeleteCinemaCommandHandler : IRequestHandler<DeleteCinemaCommand>
 {
+    private readonly ICinemaRepository _cinemaRepository;
     private readonly IUnitOfWork _unitOfWork;
 
-    public DeleteCinemaCommandHandler(IUnitOfWork unitOfWork)
+    public DeleteCinemaCommandHandler(ICinemaRepository cinemaRepository, IUnitOfWork unitOfWork)
     {
+        _cinemaRepository = cinemaRepository;
         _unitOfWork = unitOfWork;
     }
 
     public async Task Handle(DeleteCinemaCommand request, CancellationToken cancellationToken)
     {
-        var context = _unitOfWork as DbContext
-            ?? throw new InvalidOperationException("UnitOfWork must be a DbContext instance");
-
-        var cinema = await context.Set<Cinema>()
-            .FirstOrDefaultAsync(c => c.Id == request.Id, cancellationToken);
+        var cinema = await _cinemaRepository.GetByIdAsync(request.Id, cancellationToken);
 
         if (cinema == null)
             throw new KeyNotFoundException($"Cinema with id '{request.Id}' was not found.");
 
-        context.Set<Cinema>().Remove(cinema);
+        await _cinemaRepository.DeleteAsync(cinema, cancellationToken);
         await _unitOfWork.SaveChangesAsync(cancellationToken);
     }
 }
