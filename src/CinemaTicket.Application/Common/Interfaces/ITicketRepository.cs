@@ -1,20 +1,16 @@
+using System;
+using System.Collections.Generic;
+using System.Linq.Expressions;
+using System.Threading;
+using System.Threading.Tasks;
 using CinemaTicket.Domain.Entities;
-using CinemaTicket.Application.Common.Interfaces;
 
-public interface ITicketRepository : IRepository<Ticket>
+namespace CinemaTicket.Application.Common.Interfaces
 {
-    /// <summary>
-    /// Checks whether a seat is already booked for a specific showtime.
-    /// </summary>
-    Task<bool> ExistsAsync(
-        Guid showtimeId,
-        Guid seatId,
-        CancellationToken cancellationToken = default);
+    public interface ITicketRepository : IRepository<Ticket>
+    {
+        Task<bool> ExistsAsync(Guid ticketId);
 
-    /// <summary>
-    /// Gets all tickets for a specific showtime.
-    /// </summary>
-    Task<List<Ticket>> GetByShowtimeAsync(
-        Guid showtimeId,
-        CancellationToken cancellationToken = default);
+        Task<List<Ticket>> GetByShowtimeAsync(Guid showtimeId, CancellationToken cancellationToken);
+    }
 }
