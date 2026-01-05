@@ -2,6 +2,7 @@ using CinemaTicket.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
+
 public class ShowtimeConfiguration : IEntityTypeConfiguration<Showtime>
 {
     public void Configure(EntityTypeBuilder<Showtime> builder)
