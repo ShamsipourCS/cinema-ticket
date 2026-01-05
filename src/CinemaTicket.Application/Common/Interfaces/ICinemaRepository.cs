@@ -1,13 +1,10 @@
 ﻿using CinemaTicket.Domain.Entities;
 
-namespace CinemaTicket.Application.Common.Interfaces
+namespace CinemaTicket.Application.Common.Interfaces;
+
+public interface ICinemaRepository : IRepository<Cinema>
 {
-    public interface ICinemaRepository
-    {
-        Task<Cinema?> GetByIdAsync(Guid id, CancellationToken cancellationToken = default);
-        Task<IReadOnlyList<Cinema>> GetAllAsync(CancellationToken cancellationToken = default);
-        Task AddAsync(Cinema cinema, CancellationToken cancellationToken = default);
-        void Update(Cinema cinema);
-        void Delete(Cinema cinema);
-    }
+    Task<IEnumerable<Cinema>> GetActiveCinemasAsync(CancellationToken cancellationToken = default);
+    Task<IEnumerable<Cinema>> GetByCityAsync(string city, CancellationToken cancellationToken = default);
+    Task<bool> ExistsByNameInCityAsync(string name, string city, CancellationToken cancellationToken = default);
 }
