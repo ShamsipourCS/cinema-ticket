@@ -1,8 +1,9 @@
-using CinemaTicket.Application.Common.Interfaces;
+﻿using CinemaTicket.Application.Common.Interfaces;
 using CinemaTicket.Domain.Common;
 using CinemaTicket.Domain.Entities;
 using CinemaTicket.Persistence.Repositories;
 using Microsoft.EntityFrameworkCore;
+
 
 namespace CinemaTicket.Persistence.Context;
 
@@ -74,6 +75,8 @@ public class ApplicationDbContext : DbContext, IUnitOfWork
     IUserRepository IUnitOfWork.Users => _userRepository ??= new UserRepository(this);
     IRefreshTokenRepository IUnitOfWork.RefreshTokens => _refreshTokenRepository ??= new RefreshTokenRepository(this);
 
+    public object Tickets { get; internal set; }
+
     /// <inheritdoc />
     public async Task BeginTransactionAsync(CancellationToken cancellationToken = default)
     {
@@ -111,10 +114,40 @@ public class ApplicationDbContext : DbContext, IUnitOfWork
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        // This automatically applies all IEntityTypeConfiguration<T> configurations 
-        // found in this assembly (CinemaTicket.Persistence)
-        modelBuilder.ApplyConfigurationsFromAssembly(typeof(ApplicationDbContext).Assembly);
-        
         base.OnModelCreating(modelBuilder);
+
+        // پیکربندی روابط
+        modelBuilder.Entity<Ticket>()
+        .HasOne(t => t.Showtime)
+        .WithMany(s => s.Tickets)
+        .HasForeignKey(t => t.ShowtimeId)
+        .OnDelete(DeleteBehavior.Cascade);
+
+        modelBuilder.Entity<Ticket>()
+            .HasOne(t => t.User)
+            .WithMany(u => u.Tickets)
+            .HasForeignKey(t => t.UserId)
+            .OnDelete(DeleteBehavior.Restrict);
+
+        modelBuilder.Entity<Ticket>()
+            .HasOne(t => t.Seat)
+            .WithMany()
+            .HasForeignKey(t => t.SeatId)
+            .OnDelete(DeleteBehavior.Restrict);
+
+        // محدودیت یکتا برای TicketNumber
+        modelBuilder.Entity<Ticket>()
+            .HasIndex(t => t.TicketNumber)
+            .IsUnique();
+
+        // تنظیم فیلدهایی که نباید نال باشند
+        modelBuilder.Entity<Ticket>()
+            .Property(t => t.HolderName)
+            .IsRequired();  // این خط باعث می‌شود که HolderName الزامی باشد
+
+        modelBuilder.Entity<Ticket>()
+            .Property(t => t.Price)
+            .IsRequired();  // مثال دیگر از استفاده از IsRequired برای فیلدهای عددی
     }
+
 }
