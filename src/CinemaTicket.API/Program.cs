@@ -1,5 +1,6 @@
-using CinemaTicket.Persistence;
+using CinemaTicket.Application;
 using CinemaTicket.Infrastructure;
+using CinemaTicket.Persistence;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -12,6 +13,7 @@ builder.Services.AddSwaggerGen();
 
 builder.Services.AddPersistence(builder.Configuration);
 builder.Services.AddInfrastructure();
+builder.Services.AddApplication();
 
 builder.Services.AddAuthentication(options =>
 {
