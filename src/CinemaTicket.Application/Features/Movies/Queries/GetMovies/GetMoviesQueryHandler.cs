@@ -5,10 +5,7 @@ using MediatR;
 
 namespace CinemaTicket.Application.Features.Movies.Queries.GetMovies;
 
-/// <summary>
-/// Handler for the GetMoviesQuery that retrieves movies with optional filtering and pagination.
-/// </summary>
-public class GetMoviesQueryHandler : IRequestHandler<GetMoviesQuery, List<MovieDto>>
+public sealed class GetMoviesQueryHandler : IRequestHandler<GetMoviesQuery, List<MovieDto>>
 {
     private readonly IMovieRepository _movieRepository;
 
@@ -23,9 +20,7 @@ public class GetMoviesQueryHandler : IRequestHandler<GetMoviesQuery, List<MovieD
 
         if (!string.IsNullOrWhiteSpace(request.Genre))
         {
-            movies = await _movieRepository.FindAsync(
-                m => m.Genre == request.Genre,
-                cancellationToken);
+            movies = await _movieRepository.FindAsync(m => m.Genre == request.Genre, cancellationToken);
         }
         else
         {

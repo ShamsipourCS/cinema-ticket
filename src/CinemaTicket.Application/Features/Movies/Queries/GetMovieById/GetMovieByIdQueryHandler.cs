@@ -1,27 +1,21 @@
 ﻿using CinemaTicket.Application.Common.Interfaces;
 using CinemaTicket.Application.Features.Movies.DTOs;
-using CinemaTicket.Domain.Entities;
 using MediatR;
-using Microsoft.EntityFrameworkCore;
 
 namespace CinemaTicket.Application.Features.Movies.Queries.GetMovieById;
 
 public sealed class GetMovieByIdQueryHandler : IRequestHandler<GetMovieByIdQuery, MovieDto>
 {
-    private readonly IUnitOfWork _unitOfWork;
+    private readonly IMovieRepository _movieRepository;
 
-    public GetMovieByIdQueryHandler(IUnitOfWork unitOfWork)
+    public GetMovieByIdQueryHandler(IMovieRepository movieRepository)
     {
-        _unitOfWork = unitOfWork;
+        _movieRepository = movieRepository;
     }
 
     public async Task<MovieDto> Handle(GetMovieByIdQuery request, CancellationToken cancellationToken)
     {
-        var context = _unitOfWork as DbContext
-            ?? throw new InvalidOperationException("UnitOfWork must be a DbContext instance");
-
-        var movie = await context.Set<Movie>()
-            .FirstOrDefaultAsync(m => m.Id == request.Id, cancellationToken);
+        var movie = await _movieRepository.GetByIdAsync(request.Id, cancellationToken);
 
         if (movie == null)
             throw new KeyNotFoundException($"Movie with id '{request.Id}' was not found.");
