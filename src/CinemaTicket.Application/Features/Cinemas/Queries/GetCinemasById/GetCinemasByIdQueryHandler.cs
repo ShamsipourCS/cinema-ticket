@@ -6,16 +6,16 @@ namespace CinemaTicket.Application.Features.Cinemas.Queries.GetCinemaById;
 
 public sealed class GetCinemaByIdQueryHandler : IRequestHandler<GetCinemaByIdQuery, CinemaDto>
 {
-    private readonly ICinemaRepository _cinemaRepository;
+    private readonly IUnitOfWork _unitOfWork;
 
-    public GetCinemaByIdQueryHandler(ICinemaRepository cinemaRepository)
+    public GetCinemaByIdQueryHandler(IUnitOfWork unitOfWork)
     {
-        _cinemaRepository = cinemaRepository;
+        _unitOfWork = unitOfWork;
     }
 
     public async Task<CinemaDto> Handle(GetCinemaByIdQuery request, CancellationToken cancellationToken)
     {
-        var cinema = await _cinemaRepository.GetByIdAsync(request.Id, cancellationToken);
+        var cinema = await _unitOfWork.Cinemas.GetByIdAsync(request.Id, cancellationToken);
 
         if (cinema == null)
             throw new KeyNotFoundException($"Cinema with id '{request.Id}' was not found.");
