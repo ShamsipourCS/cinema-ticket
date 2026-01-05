@@ -1,23 +1,34 @@
-﻿using CinemaTicket.Application.Common.Interfaces;
+using CinemaTicket.Application.Common.Interfaces;
 using CinemaTicket.Persistence.Context;
 using CinemaTicket.Persistence.Repositories;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace CinemaTicket.Persistence
+namespace CinemaTicket.Persistence;
+
+public static class DependencyInjection
 {
-    public static class DependencyInjection
+    /// <summary>
+    /// Adds persistence-related services to the dependency injection container.
+    /// </summary>
+    /// <param name="services">The service collection.</param>
+    /// <param name="configuration">The application configuration.</param>
+    /// <returns>The service collection for chaining.</returns>
+    public static IServiceCollection AddPersistence(this IServiceCollection services, IConfiguration configuration)
     {
-        public static IServiceCollection AddPersistence(this IServiceCollection services, IConfiguration configuration)
-        {
-            services.AddDbContext<ApplicationDbContext>(options =>
-                options.UseSqlServer(configuration.GetConnectionString("DefaultConnection")));
+        // Register DbContext
+        services.AddDbContext<ApplicationDbContext>(options =>
+            options.UseSqlServer(configuration.GetConnectionString("DefaultConnection")));
 
-            services.AddScoped<IMovieRepository, MovieRepository>();
-            services.AddScoped<ICinemaRepository, CinemaRepository>();
+        // Register Unit of Work - this provides access to all repositories
+        // ApplicationDbContext implements IUnitOfWork and creates repositories internally
+        services.AddScoped<IUnitOfWork>(provider => provider.GetRequiredService<ApplicationDbContext>());
 
-            return services;
-        }
+        // Note: Individual repositories are NOT registered in DI container
+        // They are created by ApplicationDbContext as needed (lazy initialization)
+        // Access repositories through IUnitOfWork.Users, IUnitOfWork.Movies, etc.
+
+        return services;
     }
 }
