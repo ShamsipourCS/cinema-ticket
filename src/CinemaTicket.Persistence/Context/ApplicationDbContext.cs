@@ -31,6 +31,41 @@ public class ApplicationDbContext : DbContext, IUnitOfWork
     /// </summary>
     public DbSet<RefreshToken> RefreshTokens { get; set; }
 
+    /// <summary>
+    /// Gets or sets the Movies database set.
+    /// </summary>
+    public DbSet<Movie> Movies { get; set; }
+
+    /// <summary>
+    /// Gets or sets the Cinemas database set.
+    /// </summary>
+    public DbSet<Cinema> Cinemas { get; set; }
+
+    /// <summary>
+    /// Gets or sets the Halls database set.
+    /// </summary>
+    public DbSet<Hall> Halls { get; set; }
+
+    /// <summary>
+    /// Gets or sets the Seats database set.
+    /// </summary>
+    public DbSet<Seat> Seats { get; set; }
+
+    /// <summary>
+    /// Gets or sets the Showtimes database set.
+    /// </summary>
+    public DbSet<Showtime> Showtimes { get; set; }
+
+    /// <summary>
+    /// Gets or sets the Tickets database set.
+    /// </summary>
+    public DbSet<Ticket> Tickets { get; set; }
+
+    /// <summary>
+    /// Gets or sets the Payments database set.
+    /// </summary>
+    public DbSet<Payment> Payments { get; set; }
+
     // Repository instances - lazily initialized
     private IUserRepository? _userRepository;
     private IRefreshTokenRepository? _refreshTokenRepository;
