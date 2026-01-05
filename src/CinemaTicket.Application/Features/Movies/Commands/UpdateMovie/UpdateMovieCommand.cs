@@ -1,12 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using MediatR;
 
-namespace CinemaTicket.Application.Features.Movies.Commands.UpdateMovie
-{
-    internal class UpdateMovieCommand
-    {
-    }
-}
+namespace CinemaTicket.Application.Features.Movies.Commands.UpdateMovie;
+
+public sealed record UpdateMovieCommand(
+    Guid Id,
+    string Title,
+    string Description,
+    int DurationMinutes,
+    string Genre,
+    string Rating,
+    string PosterUrl,
+    DateTime ReleaseDate,
+    bool IsActive
+) : IRequest;

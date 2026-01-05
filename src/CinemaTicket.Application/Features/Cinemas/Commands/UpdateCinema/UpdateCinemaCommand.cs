@@ -1,12 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using MediatR;
 
-namespace CinemaTicket.Application.Features.Cinemas.Commands.UpdateCinema
-{
-    internal class UpdateCinemaCommand
-    {
-    }
-}
+namespace CinemaTicket.Application.Features.Cinemas.Commands.UpdateCinema;
+
+public sealed record UpdateCinemaCommand(
+    Guid Id,
+    string Name,
+    string Address,
+    string City,
+    string Phone,
+    bool IsActive
+) : IRequest;
