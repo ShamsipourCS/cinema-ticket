@@ -7,11 +7,10 @@ namespace CinemaTicket.Application.Features.Cinemas.Queries.GetCinemas;
 
 public sealed class GetCinemasQueryHandler : IRequestHandler<GetCinemasQuery, List<CinemaDto>>
 {
-    private readonly ICinemaRepository _cinemaRepository;
-
-    public GetCinemasQueryHandler(ICinemaRepository cinemaRepository)
+        IUnitOfWork _unitOfWork;
+    public GetCinemasQueryHandler(IUnitOfWork unitOfWork)
     {
-        _cinemaRepository = cinemaRepository;
+        _unitOfWork = unitOfWork;
     }
 
     public async Task<List<CinemaDto>> Handle(GetCinemasQuery request, CancellationToken cancellationToken)
@@ -20,11 +19,11 @@ public sealed class GetCinemasQueryHandler : IRequestHandler<GetCinemasQuery, Li
 
         if (!string.IsNullOrWhiteSpace(request.City))
         {
-            cinemas = await _cinemaRepository.FindAsync(c => c.City == request.City, cancellationToken);
+            cinemas = await _unitOfWork.Cinemas.FindAsync(c => c.City == request.City, cancellationToken);
         }
         else
         {
-            cinemas = await _cinemaRepository.GetAllAsync(cancellationToken);
+            cinemas = await _unitOfWork.Cinemas.GetAllAsync(cancellationToken);
         }
 
         var paged = cinemas

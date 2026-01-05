@@ -6,12 +6,10 @@ namespace CinemaTicket.Application.Features.Movies.Commands.CreateMovie;
 
 public sealed class CreateMovieCommandHandler : IRequestHandler<CreateMovieCommand, Guid>
 {
-    private readonly IMovieRepository _movieRepository;
     private readonly IUnitOfWork _unitOfWork;
 
-    public CreateMovieCommandHandler(IMovieRepository movieRepository, IUnitOfWork unitOfWork)
+    public CreateMovieCommandHandler(IUnitOfWork unitOfWork)
     {
-        _movieRepository = movieRepository;
         _unitOfWork = unitOfWork;
     }
 
@@ -30,7 +28,7 @@ public sealed class CreateMovieCommandHandler : IRequestHandler<CreateMovieComma
             IsActive = request.IsActive
         };
 
-        await _movieRepository.AddAsync(movie, cancellationToken);
+        await _unitOfWork.Movies.AddAsync(movie, cancellationToken);
         await _unitOfWork.SaveChangesAsync(cancellationToken);
 
         return movie.Id;
