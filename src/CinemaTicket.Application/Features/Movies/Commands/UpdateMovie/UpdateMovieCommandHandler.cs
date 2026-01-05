@@ -1,26 +1,22 @@
 ﻿using CinemaTicket.Application.Common.Interfaces;
-using CinemaTicket.Domain.Entities;
 using MediatR;
-using Microsoft.EntityFrameworkCore;
 
 namespace CinemaTicket.Application.Features.Movies.Commands.UpdateMovie;
 
 public sealed class UpdateMovieCommandHandler : IRequestHandler<UpdateMovieCommand>
 {
+    private readonly IMovieRepository _movieRepository;
     private readonly IUnitOfWork _unitOfWork;
 
-    public UpdateMovieCommandHandler(IUnitOfWork unitOfWork)
+    public UpdateMovieCommandHandler(IMovieRepository movieRepository, IUnitOfWork unitOfWork)
     {
+        _movieRepository = movieRepository;
         _unitOfWork = unitOfWork;
     }
 
     public async Task Handle(UpdateMovieCommand request, CancellationToken cancellationToken)
     {
-        var context = _unitOfWork as DbContext
-            ?? throw new InvalidOperationException("UnitOfWork must be a DbContext instance");
-
-        var movie = await context.Set<Movie>()
-            .FirstOrDefaultAsync(m => m.Id == request.Id, cancellationToken);
+        var movie = await _movieRepository.GetByIdAsync(request.Id, cancellationToken);
 
         if (movie == null)
             throw new KeyNotFoundException($"Movie with id '{request.Id}' was not found.");
