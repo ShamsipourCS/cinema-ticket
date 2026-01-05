@@ -1,12 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using FluentValidation;
 
-namespace CinemaTicket.Application.Features.Cinemas.Commands.UpdateCinema
+namespace CinemaTicket.Application.Features.Cinemas.Commands.UpdateCinema;
+
+public sealed class UpdateCinemaCommandValidator : AbstractValidator<UpdateCinemaCommand>
 {
-    internal class UpdateCinemaCommandValidator
+    public UpdateCinemaCommandValidator()
     {
+        RuleFor(x => x.Id).NotEmpty();
+        RuleFor(x => x.Name).NotEmpty().MaximumLength(200);
+        RuleFor(x => x.Address).NotEmpty().MaximumLength(300);
+        RuleFor(x => x.City).NotEmpty().MaximumLength(100);
+        RuleFor(x => x.Phone).NotEmpty().MaximumLength(30);
     }
 }

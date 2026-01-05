@@ -1,12 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using CinemaTicket.Application.Features.Movies.DTOs;
+using MediatR;
 
-namespace CinemaTicket.Application.Features.Movies.Queries.GetMovieById
-{
-    internal class GetMovieByIdQuery
-    {
-    }
-}
+namespace CinemaTicket.Application.Features.Movies.Queries.GetMovieById;
+
+public sealed record GetMovieByIdQuery(Guid Id) : IRequest<MovieDto>;

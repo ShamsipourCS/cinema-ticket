@@ -1,12 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using FluentValidation;
 
-namespace CinemaTicket.Application.Features.Cinemas.Commands.DeleteCinema
+namespace CinemaTicket.Application.Features.Cinemas.Commands.DeleteCinema;
+
+public sealed class DeleteCinemaCommandValidator : AbstractValidator<DeleteCinemaCommand>
 {
-    internal class DeleteCinemaValidator
+    public DeleteCinemaCommandValidator()
     {
+        RuleFor(x => x.Id).NotEmpty();
     }
 }

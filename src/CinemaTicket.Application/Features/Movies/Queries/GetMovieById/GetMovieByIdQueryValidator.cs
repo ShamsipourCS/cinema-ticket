@@ -1,12 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using FluentValidation;
 
-namespace CinemaTicket.Application.Features.Movies.Queries.GetMovieById
+namespace CinemaTicket.Application.Features.Movies.Queries.GetMovieById;
+
+public sealed class GetMovieByIdQueryValidator : AbstractValidator<GetMovieByIdQuery>
 {
-    internal class GetMovieByIdQueryValidator
+    public GetMovieByIdQueryValidator()
     {
+        RuleFor(x => x.Id).NotEmpty();
     }
 }

@@ -1,12 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using MediatR;
 
-namespace CinemaTicket.Application.Features.Movies.Commands.DeleteMovie
-{
-    internal class DeleteMovieCommand
-    {
-    }
-}
+namespace CinemaTicket.Application.Features.Movies.Commands.DeleteMovie;
+
+public sealed record DeleteMovieCommand(Guid Id) : IRequest;

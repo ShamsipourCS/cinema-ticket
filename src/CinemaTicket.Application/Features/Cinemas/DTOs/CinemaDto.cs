@@ -1,12 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿namespace CinemaTicket.Application.Features.Cinemas.DTOs;
 
-namespace CinemaTicket.Application.Features.Cinemas.DTOs
-{
-    internal class CinemaDto
-    {
-    }
-}
+public sealed record CinemaDto(
+    Guid Id,
+    string Name,
+    string Address,
+    string City,
+    string Phone,
+    bool IsActive
+);
