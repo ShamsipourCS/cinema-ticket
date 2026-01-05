@@ -1,13 +1,10 @@
 ﻿using CinemaTicket.Domain.Entities;
 
-namespace CinemaTicket.Application.Common.Interfaces
+namespace CinemaTicket.Application.Common.Interfaces;
+
+public interface IMovieRepository : IRepository<Movie>
 {
-    public interface IMovieRepository
-    {
-        Task<Movie?> GetByIdAsync(Guid id, CancellationToken cancellationToken = default);
-        Task<IReadOnlyList<Movie>> GetAllAsync(CancellationToken cancellationToken = default);
-        Task AddAsync(Movie movie, CancellationToken cancellationToken = default);
-        void Update(Movie movie);
-        void Delete(Movie movie);
-    }
+    Task<IEnumerable<Movie>> GetActiveMoviesAsync(CancellationToken cancellationToken = default);
+    Task<IEnumerable<Movie>> GetByGenreAsync(string genre, CancellationToken cancellationToken = default);
+    Task<bool> ExistsWithTitleAsync(string title, CancellationToken cancellationToken = default);
 }
