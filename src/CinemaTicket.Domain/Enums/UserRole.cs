@@ -1,7 +1,17 @@
 namespace CinemaTicket.Domain.Enums;
 
+/// <summary>
+/// Defines the roles available for users in the system.
+/// </summary>
 public enum UserRole
 {
-    User = 0,
+    /// <summary>
+    /// A regular customer who can book tickets.
+    /// </summary>
+    Customer = 0,
+
+    /// <summary>
+    /// An administrator who can manage cinemas, movies, and showtimes.
+    /// </summary>
     Admin = 1
 }
