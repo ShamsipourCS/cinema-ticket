@@ -15,13 +15,13 @@ namespace CinemaTicket.Persistence.Repositories
             _context = context;
         }
 
-        // متد برای بررسی وجود تیکت
+        // Method to check if ticket exists
         public async Task<bool> ExistsAsync(Guid ticketId)
         {
             return await _context.Set<Ticket>().AnyAsync(t => t.Id == ticketId);
         }
 
-        // متد برای گرفتن تیکت‌ها بر اساس Showtime
+        // Method to get tickets by Showtime
         public async Task<List<Ticket>> GetByShowtimeAsync(Guid showtimeId, CancellationToken cancellationToken)
         {
             return await _context.Set<Ticket>()
@@ -29,7 +29,7 @@ namespace CinemaTicket.Persistence.Repositories
                 .ToListAsync(cancellationToken);
         }
 
-        // پیاده‌سازی سایر متدها از IRepository<T>
+        // Implementation of other methods from IRepository<T>
         public async Task<Ticket> GetByIdAsync(Guid id, CancellationToken cancellationToken)
         {
             return await _context.Set<Ticket>()
