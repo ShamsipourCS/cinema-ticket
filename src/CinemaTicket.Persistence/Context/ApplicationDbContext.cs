@@ -75,8 +75,6 @@ public class ApplicationDbContext : DbContext, IUnitOfWork
     IUserRepository IUnitOfWork.Users => _userRepository ??= new UserRepository(this);
     IRefreshTokenRepository IUnitOfWork.RefreshTokens => _refreshTokenRepository ??= new RefreshTokenRepository(this);
 
-    public object Tickets { get; internal set; }
-
     /// <inheritdoc />
     public async Task BeginTransactionAsync(CancellationToken cancellationToken = default)
     {
