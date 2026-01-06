@@ -1,3 +1,4 @@
+using CinemaTicket.API.Middleware;
 using CinemaTicket.Application;
 using CinemaTicket.Infrastructure;
 using CinemaTicket.Persistence;
@@ -38,6 +39,10 @@ builder.Services.AddAuthentication(options =>
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
+
+// Exception Handling Middleware (must be FIRST in pipeline)
+app.UseMiddleware<ExceptionHandlingMiddleware>();
+
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
