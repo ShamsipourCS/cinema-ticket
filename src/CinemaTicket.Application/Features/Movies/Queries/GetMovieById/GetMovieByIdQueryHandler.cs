@@ -1,4 +1,4 @@
-﻿using CinemaTicket.Application.Common.Interfaces;
+﻿using CinemaTicket.Domain.Interfaces;
 using CinemaTicket.Application.Features.Movies.DTOs;
 using CinemaTicket.Domain.Entities;
 using MediatR;
