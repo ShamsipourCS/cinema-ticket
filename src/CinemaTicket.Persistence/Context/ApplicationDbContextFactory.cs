@@ -1,30 +1,25 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using CinemaTicket.Persistence.Context;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
 using Microsoft.Extensions.Configuration;
+using System.IO;
 
-namespace CinemaTicket.Persistence.Context
+public class DesignTimeDbContextFactory : IDesignTimeDbContextFactory<ApplicationDbContext>
 {
-    public class ApplicationDbContextFactory : IDesignTimeDbContextFactory<ApplicationDbContext>
+    public ApplicationDbContext CreateDbContext(string[] args)
     {
-        public ApplicationDbContext CreateDbContext(string[] args)
-        {
-            var basePath = Path.Combine(Directory.GetCurrentDirectory(), "../CinemaTicket.API");
+        var optionsBuilder = new DbContextOptionsBuilder<ApplicationDbContext>();
 
-            var configuration = new ConfigurationBuilder()
-                .SetBasePath(basePath)
-                .AddJsonFile("appsettings.json", optional: false)
-                .AddJsonFile("appsettings.Development.json", optional: true)
-                .AddEnvironmentVariables()
-                .Build();
+        // بارگذاری تنظیمات از appsettings.json
+        var config = new ConfigurationBuilder()
+            .SetBasePath(Directory.GetCurrentDirectory())  // مسیر جاری پروژه را تنظیم می‌کند
+            .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)  // بارگذاری appsettings.json
+            .Build();
 
-            var connectionString = configuration.GetConnectionString("DefaultConnection");
-            if (string.IsNullOrWhiteSpace(connectionString))
-                throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
+        var connectionString = config.GetConnectionString("DefaultConnection");
 
-            var optionsBuilder = new DbContextOptionsBuilder<ApplicationDbContext>();
-            optionsBuilder.UseSqlServer(connectionString);
+        optionsBuilder.UseSqlServer(connectionString);  // استفاده از SQL Server برای دیتابیس
 
-            return new ApplicationDbContext(optionsBuilder.Options);
-        }
+        return new ApplicationDbContext(optionsBuilder.Options);
     }
 }

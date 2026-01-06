@@ -1,6 +1,6 @@
-using CinemaTicket.Application.Common.Interfaces;
-using CinemaTicket.Domain.Common;
+﻿using CinemaTicket.Domain.Common;
 using CinemaTicket.Domain.Entities;
+using CinemaTicket.Domain.Interfaces;
 using CinemaTicket.Persistence.Repositories;
 using Microsoft.EntityFrameworkCore;
 
@@ -118,10 +118,10 @@ public class ApplicationDbContext : DbContext, IUnitOfWork
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        // This automatically applies all IEntityTypeConfiguration<T> configurations 
-        // found in this assembly (CinemaTicket.Persistence)
-        modelBuilder.ApplyConfigurationsFromAssembly(typeof(ApplicationDbContext).Assembly);
-        
         base.OnModelCreating(modelBuilder);
+
+        // Apply all entity configurations from this assembly
+        modelBuilder.ApplyConfigurationsFromAssembly(typeof(ApplicationDbContext).Assembly);
     }
+
 }

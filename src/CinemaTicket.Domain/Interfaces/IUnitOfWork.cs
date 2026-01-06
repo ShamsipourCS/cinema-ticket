@@ -2,7 +2,7 @@ using System;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace CinemaTicket.Application.Common.Interfaces;
+namespace CinemaTicket.Domain.Interfaces;
 
 /// <summary>
 /// Coordinates work across multiple repositories and provides transaction support.

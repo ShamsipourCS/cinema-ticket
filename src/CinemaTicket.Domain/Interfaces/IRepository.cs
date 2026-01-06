@@ -5,7 +5,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using CinemaTicket.Domain.Common;
 
-namespace CinemaTicket.Application.Common.Interfaces;
+namespace CinemaTicket.Domain.Interfaces;
 
 /// <summary>
 /// Generic repository interface for basic CRUD operations.
@@ -35,7 +35,7 @@ public interface IRepository<T> where T : BaseEntity
     /// <param name="cancellationToken">The cancellation token.</param>
     /// <returns>A collection of entities matching the criteria.</returns>
     Task<IEnumerable<T>> FindAsync(Expression<Func<T, bool>> predicate, CancellationToken cancellationToken = default);
-    
+
     /// <summary>
     /// Adds a new entity asynchronously.
     /// </summary>

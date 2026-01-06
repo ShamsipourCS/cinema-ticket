@@ -1,5 +1,5 @@
-﻿using CinemaTicket.Application.Common.Interfaces;
-using CinemaTicket.Domain.Entities;
+﻿using CinemaTicket.Domain.Entities;
+using CinemaTicket.Domain.Interfaces;
 using MediatR;
 
 namespace CinemaTicket.Application.Features.Halls.Commands.CreateHall;
