@@ -45,7 +45,7 @@ public class TicketConfiguration : IEntityTypeConfiguration<Ticket>
                .OnDelete(DeleteBehavior.Restrict);
 
         builder.HasOne(t => t.Seat)
-               .WithMany()
+               .WithMany(s => s.Tickets)
                .HasForeignKey(t => t.SeatId)
                .OnDelete(DeleteBehavior.Restrict);
 
