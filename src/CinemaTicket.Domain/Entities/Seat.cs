@@ -37,4 +37,9 @@ public class Seat : BaseEntity
     /// Gets or sets the hall this seat belongs to.
     /// </summary>
     public Hall? Hall { get; set; }
+
+    /// <summary>
+    /// Gets or sets the collection of tickets reserved for this seat.
+    /// </summary>
+    public ICollection<Ticket> Tickets { get; set; } = new List<Ticket>();
 }

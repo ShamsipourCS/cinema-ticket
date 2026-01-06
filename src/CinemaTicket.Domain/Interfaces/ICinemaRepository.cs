@@ -1,6 +1,6 @@
-﻿using CinemaTicket.Domain.Entities;
+using CinemaTicket.Domain.Entities;
 
-namespace CinemaTicket.Application.Common.Interfaces;
+namespace CinemaTicket.Domain.Interfaces;
 
 public interface ICinemaRepository : IRepository<Cinema>
 {

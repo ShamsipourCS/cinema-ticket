@@ -1,4 +1,4 @@
-﻿using CinemaTicket.Application.Common.Interfaces;
+﻿using CinemaTicket.Domain.Interfaces;
 using MediatR;
 
 namespace CinemaTicket.Application.Features.Halls.Commands.DeleteHall;
