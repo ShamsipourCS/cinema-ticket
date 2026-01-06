@@ -1,4 +1,4 @@
-using CinemaTicket.Application.Common.Interfaces;
+using CinemaTicket.Domain.Interfaces;
 using CinemaTicket.Persistence.Context;
 using CinemaTicket.Persistence.Repositories;
 using Microsoft.EntityFrameworkCore;

@@ -1,7 +1,6 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
 	<ItemGroup>
-		<ProjectReference Include="..\CinemaTicket.Application\CinemaTicket.Application.csproj" />
 		<ProjectReference Include="..\CinemaTicket.Domain\CinemaTicket.Domain.csproj" />
 	</ItemGroup>
 
