@@ -1,5 +1,5 @@
 using CinemaTicket.Domain.Entities;
-using CinemaTicket.Application.Common.Interfaces;
+using CinemaTicket.Domain.Interfaces;
 
 public interface IShowtimeRepository : IRepository<Showtime>
 {
