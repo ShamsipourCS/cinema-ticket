@@ -13,11 +13,13 @@ public class ShowtimeConfiguration : IEntityTypeConfiguration<Showtime>
                .HasPrecision(18, 2);
 
         builder.HasOne(s => s.Movie)
-               .WithMany()
-               .HasForeignKey(s => s.MovieId);
+               .WithMany(m => m.Showtimes)
+               .HasForeignKey(s => s.MovieId)
+               .OnDelete(DeleteBehavior.Restrict);
 
         builder.HasOne(s => s.Hall)
-               .WithMany()
-               .HasForeignKey(s => s.HallId);
+               .WithMany(h => h.Showtimes)
+               .HasForeignKey(s => s.HallId)
+               .OnDelete(DeleteBehavior.Restrict);
     }
 }
