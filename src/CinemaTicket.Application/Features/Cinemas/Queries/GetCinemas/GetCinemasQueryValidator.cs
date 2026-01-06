@@ -2,9 +2,9 @@
 
 namespace CinemaTicket.Application.Features.Cinemas.Queries.GetCinemas;
 
-public sealed class GetCinemasByIdQueryValidator : AbstractValidator<GetCinemasQuery>
+public sealed class GetCinemasQueryValidator : AbstractValidator<GetCinemasQuery>
 {
-    public GetCinemasByIdQueryValidator()
+    public GetCinemasQueryValidator()
     {
         RuleFor(x => x.PageNumber).GreaterThanOrEqualTo(1);
         RuleFor(x => x.PageSize).InclusiveBetween(1, 100);
