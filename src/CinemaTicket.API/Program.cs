@@ -2,8 +2,6 @@ using CinemaTicket.API.Middleware;
 using CinemaTicket.Application;
 using CinemaTicket.Infrastructure;
 using CinemaTicket.Persistence;
-using CinemaTicket.Persistence.Context;
-using CinemaTicket.Persistence.Seeders;
 using Serilog;
 
 // Configure Serilog bootstrap logger for startup errors
@@ -24,7 +22,9 @@ try
         .Enrich.FromLogContext());
 
     // Add services to the container.
+
     builder.Services.AddControllers();
+    // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
     builder.Services.AddEndpointsApiExplorer();
     builder.Services.AddSwaggerGen();
 
@@ -54,16 +54,13 @@ try
 
     var app = builder.Build();
 
+    // Configure the HTTP request pipeline.
+
     // Exception Handling Middleware (must be FIRST in pipeline)
     app.UseMiddleware<ExceptionHandlingMiddleware>();
 
     if (app.Environment.IsDevelopment())
     {
-        // Seed catalog data in development only
-        using var scope = app.Services.CreateScope();
-        var context = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
-        await CatalogSeeder.SeedAsync(context);
-
         app.UseSwagger();
         app.UseSwaggerUI();
     }
