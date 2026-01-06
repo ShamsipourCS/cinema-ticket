@@ -43,12 +43,12 @@ public class MoviesController : ControllerBase
     /// <remarks>
     /// Sample requests:
     ///
-    ///     GET /api/movies?pageNumber=1&amp;pageSize=10
-    ///     GET /api/movies?genre=Action&amp;pageNumber=1&amp;pageSize=5
+    ///     GET /api/Movies?pageNumber=1&amp;pageSize=10
+    ///     GET /api/Movies?genre=Action&amp;pageNumber=1&amp;pageSize=5
     ///
     /// Invalid request (will trigger ValidationBehavior):
     ///
-    ///     GET /api/movies?pageNumber=0&amp;pageSize=150
+    ///     GET /api/Movies?pageNumber=0&amp;pageSize=150
     ///
     /// This will return HTTP 400 with validation error messages.
     /// </remarks>
@@ -83,7 +83,7 @@ public class MoviesController : ControllerBase
     /// <remarks>
     /// Sample request:
     ///
-    ///     GET /api/movies/{id}
+    ///     GET /api/Movies/{id}
     /// </remarks>
     [HttpGet("{id:guid}")]
     [ProducesResponseType(StatusCodes.Status200OK)]
@@ -115,7 +115,7 @@ public class MoviesController : ControllerBase
     /// <remarks>
     /// Sample request:
     ///
-    ///     POST /api/movies
+    ///     POST /api/Movies
     /// </remarks>
     [HttpPost]
     [ProducesResponseType(StatusCodes.Status201Created)]
@@ -142,7 +142,7 @@ public class MoviesController : ControllerBase
     /// <remarks>
     /// Sample request:
     ///
-    ///     PUT /api/movies/{id}
+    ///     PUT /api/Movies/{id}
     /// </remarks>
     [HttpPut("{id:guid}")]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
@@ -180,7 +180,7 @@ public class MoviesController : ControllerBase
     /// <remarks>
     /// Sample request:
     ///
-    ///     DELETE /api/movies/{id}
+    ///     DELETE /api/Movies/{id}
     /// </remarks>
     [HttpDelete("{id:guid}")]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
