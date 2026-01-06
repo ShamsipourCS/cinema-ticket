@@ -1,4 +1,5 @@
 ﻿using CinemaTicket.Domain.Entities;
+using CinemaTicket.Domain.Interfaces;
 using CinemaTicket.Persistence.Context;
 using Microsoft.EntityFrameworkCore;
 
