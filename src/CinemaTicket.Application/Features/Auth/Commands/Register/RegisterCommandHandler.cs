@@ -62,7 +62,7 @@ public sealed class RegisterCommandHandler : IRequestHandler<RegisterCommand, Au
 
         // Generate refresh token
         var refreshTokenString = _jwtService.GenerateRefreshToken();
-        var refreshToken = new RefreshToken
+        var refreshToken = new Domain.Entities.RefreshToken
         {
             Id = Guid.NewGuid(),
             UserId = user.Id,

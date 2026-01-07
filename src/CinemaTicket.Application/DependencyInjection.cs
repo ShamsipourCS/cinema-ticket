@@ -1,6 +1,7 @@
 using System.Reflection;
 using FluentValidation;
 using MediatR;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace CinemaTicket.Application;
@@ -33,6 +34,9 @@ public static class DependencyInjection
 
         // Register FluentValidation validators from assembly
         services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
+
+        // Register HTTP context accessor for getting authenticated user in handlers
+        services.AddHttpContextAccessor();
 
         return services;
     }

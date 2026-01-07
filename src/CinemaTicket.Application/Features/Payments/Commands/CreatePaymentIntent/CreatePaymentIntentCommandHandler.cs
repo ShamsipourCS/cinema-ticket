@@ -40,7 +40,7 @@ public sealed class CreatePaymentIntentCommandHandler : IRequestHandler<CreatePa
         var userIdClaim = _httpContextAccessor.HttpContext?.User?.FindFirst(ClaimTypes.NameIdentifier)?.Value;
         if (string.IsNullOrEmpty(userIdClaim) || !Guid.TryParse(userIdClaim, out var userId))
         {
-            throw new UnauthorizedAccessException("User is not authenticated.");
+            throw new Domain.Exceptions.UnauthorizedAccessException("User is not authenticated.");
         }
 
         // Build metadata for Stripe payment intent
@@ -60,7 +60,7 @@ public sealed class CreatePaymentIntentCommandHandler : IRequestHandler<CreatePa
         var payment = new Payment
         {
             Id = Guid.NewGuid(),
-            StripePaymentIntentId = paymentIntent.Id,
+            StripePaymentIntentId = paymentIntent.PaymentIntentId,
             Amount = request.Amount / 100m, // Convert cents to dollars
             Currency = currency,
             Status = PaymentStatus.Pending
@@ -72,7 +72,7 @@ public sealed class CreatePaymentIntentCommandHandler : IRequestHandler<CreatePa
 
         // Return payment intent response
         return new PaymentIntentResponseDto(
-            PaymentIntentId: paymentIntent.Id,
+            PaymentIntentId: paymentIntent.PaymentIntentId,
             ClientSecret: paymentIntent.ClientSecret,
             Amount: request.Amount,
             Currency: currency

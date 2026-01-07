@@ -1,7 +1,7 @@
 using System;
 using System.Security.Claims;
 using System.Threading;
-using System.Threading.Task;
+using System.Threading.Tasks;
 using CinemaTicket.Application.Common.Interfaces;
 using CinemaTicket.Application.Features.Auth.DTOs;
 using CinemaTicket.Domain.Entities;
@@ -34,14 +34,14 @@ public sealed class RefreshTokenCommandHandler : IRequestHandler<RefreshTokenCom
         var principal = _jwtService.GetPrincipalFromExpiredToken(request.AccessToken);
         if (principal == null)
         {
-            throw new UnauthorizedAccessException("Invalid access token.");
+            throw new Domain.Exceptions.UnauthorizedAccessException("Invalid access token.");
         }
 
         // Get user ID from claims
         var userIdClaim = principal.FindFirst(ClaimTypes.NameIdentifier)?.Value;
         if (string.IsNullOrEmpty(userIdClaim) || !Guid.TryParse(userIdClaim, out var userId))
         {
-            throw new UnauthorizedAccessException("Invalid token claims.");
+            throw new Domain.Exceptions.UnauthorizedAccessException("Invalid token claims.");
         }
 
         // Validate refresh token
@@ -52,14 +52,14 @@ public sealed class RefreshTokenCommandHandler : IRequestHandler<RefreshTokenCom
 
         if (storedRefreshToken == null)
         {
-            throw new UnauthorizedAccessException("Invalid or expired refresh token.");
+            throw new Domain.Exceptions.UnauthorizedAccessException("Invalid or expired refresh token.");
         }
 
         // Get user
         var user = await _unitOfWork.Users.GetByIdAsync(userId, cancellationToken);
         if (user == null)
         {
-            throw new UnauthorizedAccessException("User not found.");
+            throw new Domain.Exceptions.UnauthorizedAccessException("User not found.");
         }
 
         // Generate new JWT access token
