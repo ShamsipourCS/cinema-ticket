@@ -1,7 +1,5 @@
 ﻿using CinemaTicket.Domain.Interfaces;
-using CinemaTicket.Domain.Entities;
 using MediatR;
-using Microsoft.EntityFrameworkCore;
 
 namespace CinemaTicket.Application.Features.Cinemas.Commands.DeleteCinema;
 
@@ -16,16 +14,12 @@ public sealed class DeleteCinemaCommandHandler : IRequestHandler<DeleteCinemaCom
 
     public async Task Handle(DeleteCinemaCommand request, CancellationToken cancellationToken)
     {
-        var context = _unitOfWork as DbContext
-            ?? throw new InvalidOperationException("UnitOfWork must be a DbContext instance");
-
-        var cinema = await context.Set<Cinema>()
-            .FirstOrDefaultAsync(c => c.Id == request.Id, cancellationToken);
+        var cinema = await _unitOfWork.Cinemas.GetByIdAsync(request.Id, cancellationToken);
 
         if (cinema == null)
             throw new KeyNotFoundException($"Cinema with id '{request.Id}' was not found.");
 
-        context.Set<Cinema>().Remove(cinema);
+        await _unitOfWork.Cinemas.DeleteAsync(cinema, cancellationToken);
         await _unitOfWork.SaveChangesAsync(cancellationToken);
     }
 }

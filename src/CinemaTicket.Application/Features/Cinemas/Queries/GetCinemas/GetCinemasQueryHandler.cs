@@ -2,35 +2,36 @@
 using CinemaTicket.Application.Features.Cinemas.DTOs;
 using CinemaTicket.Domain.Entities;
 using MediatR;
-using Microsoft.EntityFrameworkCore;
 
 namespace CinemaTicket.Application.Features.Cinemas.Queries.GetCinemas;
 
-public sealed class GetCinemasByIdQueryHandler : IRequestHandler<GetCinemasQuery, List<CinemaDto>>
+public sealed class GetCinemasQueryHandler : IRequestHandler<GetCinemasQuery, List<CinemaDto>>
 {
-    private readonly IUnitOfWork _unitOfWork;
-
-    public GetCinemasByIdQueryHandler(IUnitOfWork unitOfWork)
+        IUnitOfWork _unitOfWork;
+    public GetCinemasQueryHandler(IUnitOfWork unitOfWork)
     {
         _unitOfWork = unitOfWork;
     }
 
     public async Task<List<CinemaDto>> Handle(GetCinemasQuery request, CancellationToken cancellationToken)
     {
-        var context = _unitOfWork as DbContext
-            ?? throw new InvalidOperationException("UnitOfWork must be a DbContext instance");
-
-        var query = context.Set<Cinema>().AsQueryable();
+        IEnumerable<Cinema> cinemas;
 
         if (!string.IsNullOrWhiteSpace(request.City))
-            query = query.Where(c => c.City == request.City);
+        {
+            cinemas = await _unitOfWork.Cinemas.FindAsync(c => c.City == request.City, cancellationToken);
+        }
+        else
+        {
+            cinemas = await _unitOfWork.Cinemas.GetAllAsync(cancellationToken);
+        }
 
-        var cinemas = await query
+        var paged = cinemas
             .Skip((request.PageNumber - 1) * request.PageSize)
             .Take(request.PageSize)
-            .ToListAsync(cancellationToken);
+            .ToList();
 
-        return cinemas.Select(c => new CinemaDto(
+        return paged.Select(c => new CinemaDto(
             Id: c.Id,
             Name: c.Name,
             Address: c.Address,

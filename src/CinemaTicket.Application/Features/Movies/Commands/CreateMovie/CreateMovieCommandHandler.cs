@@ -1,7 +1,6 @@
 ﻿using CinemaTicket.Domain.Interfaces;
 using CinemaTicket.Domain.Entities;
 using MediatR;
-using Microsoft.EntityFrameworkCore;
 
 namespace CinemaTicket.Application.Features.Movies.Commands.CreateMovie;
 
@@ -16,9 +15,6 @@ public sealed class CreateMovieCommandHandler : IRequestHandler<CreateMovieComma
 
     public async Task<Guid> Handle(CreateMovieCommand request, CancellationToken cancellationToken)
     {
-        var context = _unitOfWork as DbContext
-            ?? throw new InvalidOperationException("UnitOfWork must be a DbContext instance");
-
         var movie = new Movie
         {
             Id = Guid.NewGuid(),
@@ -32,7 +28,7 @@ public sealed class CreateMovieCommandHandler : IRequestHandler<CreateMovieComma
             IsActive = request.IsActive
         };
 
-        context.Set<Movie>().Add(movie);
+        await _unitOfWork.Movies.AddAsync(movie, cancellationToken);
         await _unitOfWork.SaveChangesAsync(cancellationToken);
 
         return movie.Id;

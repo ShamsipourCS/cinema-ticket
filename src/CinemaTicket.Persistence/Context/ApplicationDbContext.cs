@@ -70,10 +70,16 @@ public class ApplicationDbContext : DbContext, IUnitOfWork
     // Repository instances - lazily initialized
     private IUserRepository? _userRepository;
     private IRefreshTokenRepository? _refreshTokenRepository;
+    private IMovieRepository? _movieRepository;
+    private ICinemaRepository? _cinemaRepository;
+    private IHallRepository? _hallRepository;
 
     // IUnitOfWork Repository Properties
     IUserRepository IUnitOfWork.Users => _userRepository ??= new UserRepository(this);
     IRefreshTokenRepository IUnitOfWork.RefreshTokens => _refreshTokenRepository ??= new RefreshTokenRepository(this);
+    IMovieRepository IUnitOfWork.Movies => _movieRepository ??= new MovieRepository(this);
+    ICinemaRepository IUnitOfWork.Cinemas => _cinemaRepository ??= new CinemaRepository(this);
+    IHallRepository IUnitOfWork.Halls => _hallRepository ??= new HallRepository(this);
 
     /// <inheritdoc />
     public async Task BeginTransactionAsync(CancellationToken cancellationToken = default)

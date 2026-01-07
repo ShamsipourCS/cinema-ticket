@@ -24,7 +24,7 @@ public static class DependencyInjection
         // Register Unit of Work - this provides access to all repositories
         // ApplicationDbContext implements IUnitOfWork and creates repositories internally
         services.AddScoped<IUnitOfWork>(provider => provider.GetRequiredService<ApplicationDbContext>());
-
+               
         // Note: Individual repositories are NOT registered in DI container
         // They are created by ApplicationDbContext as needed (lazy initialization)
         // Access repositories through IUnitOfWork.Users, IUnitOfWork.Movies, etc.
