@@ -36,14 +36,14 @@ public sealed class LoginCommandHandler : IRequestHandler<LoginCommand, AuthResp
         var user = await _unitOfWork.Users.GetByEmailAsync(request.Email, cancellationToken);
         if (user == null)
         {
-            throw new UnauthorizedAccessException("Invalid credentials.");
+            throw new Domain.Exceptions.UnauthorizedAccessException("Invalid credentials.");
         }
 
         // Verify password
         var verificationResult = _passwordHasher.VerifyHashedPassword(user, user.PasswordHash, request.Password);
         if (verificationResult == PasswordVerificationResult.Failed)
         {
-            throw new UnauthorizedAccessException("Invalid credentials.");
+            throw new Domain.Exceptions.UnauthorizedAccessException("Invalid credentials.");
         }
 
         // Generate JWT access token
@@ -51,7 +51,7 @@ public sealed class LoginCommandHandler : IRequestHandler<LoginCommand, AuthResp
 
         // Generate refresh token
         var refreshTokenString = _jwtService.GenerateRefreshToken();
-        var refreshToken = new RefreshToken
+        var refreshToken = new Domain.Entities.RefreshToken
         {
             Id = Guid.NewGuid(),
             UserId = user.Id,
