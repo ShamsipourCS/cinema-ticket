@@ -1,6 +1,8 @@
 using CinemaTicket.Application.Common.Interfaces;
+using CinemaTicket.Domain.Entities;
 using CinemaTicket.Infrastructure.Services;
 using CinemaTicket.Infrastructure.Settings;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -24,6 +26,9 @@ public static class DependencyInjection
         // Register services with scoped lifetime (per-request)
         services.AddScoped<IJwtService, JwtService>();
         services.AddScoped<IStripePaymentService, StripePaymentService>();
+
+        // Password Hashing
+        services.AddScoped<IPasswordHasher<User>, PasswordHasher<User>>();
 
         return services;
     }
