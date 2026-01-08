@@ -1,0 +1,68 @@
+﻿using System;
+using System.Threading;
+using System.Threading.Tasks;
+using CinemaTicket.Application.Common.Interfaces;
+
+namespace CinemaTicket.Application.Tests.Fakes;
+
+public sealed class FakeUnitOfWork : IUnitOfWork
+{
+    public FakeUnitOfWork(
+        IMovieRepository movies,
+        ICinemaRepository cinemas,
+        IHallRepository halls)
+    {
+        Movies = movies;
+        Cinemas = cinemas;
+        Halls = halls;
+    }
+
+    public FakeUnitOfWork()
+        : this(new FakeMovieRepository(), new FakeCinemaRepository(), new FakeHallRepository())
+    {
+    }
+
+    public IUserRepository Users =>
+        throw new NotImplementedException("Users repository not needed for catalog handler tests.");
+
+    public IRefreshTokenRepository RefreshTokens =>
+        throw new NotImplementedException("RefreshTokens repository not needed for catalog handler tests.");
+
+    public IMovieRepository Movies { get; }
+    public ICinemaRepository Cinemas { get; }
+    public IHallRepository Halls { get; }
+
+    public int SaveChangesCalls { get; private set; }
+    public int BeginTransactionCalls { get; private set; }
+    public int CommitTransactionCalls { get; private set; }
+    public int RollbackTransactionCalls { get; private set; }
+
+    public Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
+    {
+        SaveChangesCalls++;
+        return Task.FromResult(1);
+    }
+
+    public Task BeginTransactionAsync(CancellationToken cancellationToken = default)
+    {
+        BeginTransactionCalls++;
+        return Task.CompletedTask;
+    }
+
+    public Task CommitTransactionAsync(CancellationToken cancellationToken = default)
+    {
+        CommitTransactionCalls++;
+        return Task.CompletedTask;
+    }
+
+    public Task RollbackTransactionAsync(CancellationToken cancellationToken = default)
+    {
+        RollbackTransactionCalls++;
+        return Task.CompletedTask;
+    }
+
+    public void Dispose()
+    {
+        // Nothing to dispose in fake
+    }
+}
