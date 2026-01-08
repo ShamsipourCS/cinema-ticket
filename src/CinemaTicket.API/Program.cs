@@ -1,6 +1,8 @@
 using CinemaTicket.Application;
 using CinemaTicket.Infrastructure;
 using CinemaTicket.Persistence;
+using CinemaTicket.Persistence.Context;
+using CinemaTicket.Persistence.Seeders;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -37,9 +39,16 @@ builder.Services.AddAuthentication(options =>
 
 var app = builder.Build();
 
+
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
+        // Add seeding logic here
+    using (var scope = app.Services.CreateScope())
+    {
+        var context = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+        await CatalogSeeder.SeedAsync(context);  // Call to the seeder
+    }
     app.UseSwagger();
     app.UseSwaggerUI();
 }
