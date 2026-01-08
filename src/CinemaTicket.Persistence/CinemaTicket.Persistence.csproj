@@ -2,6 +2,7 @@
 
 	<ItemGroup>
 		<ProjectReference Include="..\CinemaTicket.Domain\CinemaTicket.Domain.csproj" />
+		<ProjectReference Include="..\CinemaTicket.Application\CinemaTicket.Application.csproj" />
 	</ItemGroup>
 
   <ItemGroup>
