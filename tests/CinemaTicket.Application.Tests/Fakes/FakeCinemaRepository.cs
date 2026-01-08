@@ -41,8 +41,17 @@ public sealed class FakeCinemaRepository : ICinemaRepository
     public Task UpdateAsync(Cinema entity, CancellationToken cancellationToken = default)
     {
         UpdateCalls++;
+
         var idx = _store.FindIndex(c => c.Id == entity.Id);
-        if (idx >= 0) _store[idx] = entity;
+        if (idx >= 0)
+        {
+            _store[idx] = entity;
+        }
+        else
+        {
+            _store.Add(entity);
+        }
+
         return Task.CompletedTask;
     }
 
@@ -57,7 +66,9 @@ public sealed class FakeCinemaRepository : ICinemaRepository
         => Task.FromResult<IEnumerable<Cinema>>(_store.Where(c => c.IsActive).ToList());
 
     public Task<IEnumerable<Cinema>> GetByCityAsync(string city, CancellationToken cancellationToken = default)
-        => Task.FromResult<IEnumerable<Cinema>>(_store.Where(c => c.City == city).ToList());
+        => Task.FromResult<IEnumerable<Cinema>>(
+            _store.Where(c => string.Equals(c.City, city, StringComparison.OrdinalIgnoreCase)).ToList()
+        );
 
     public Task<bool> ExistsByNameInCityAsync(string name, string city, CancellationToken cancellationToken = default)
         => Task.FromResult(_store.Any(c =>
