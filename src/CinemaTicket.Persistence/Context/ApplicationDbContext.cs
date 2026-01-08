@@ -3,6 +3,8 @@ using CinemaTicket.Domain.Entities;
 using CinemaTicket.Domain.Interfaces;
 using CinemaTicket.Persistence.Repositories;
 using Microsoft.EntityFrameworkCore;
+using CinemaTicket.Application.Common.Interfaces;
+
 
 
 namespace CinemaTicket.Persistence.Context;
@@ -11,7 +13,9 @@ namespace CinemaTicket.Persistence.Context;
 /// Entity Framework Core database context for the cinema ticket booking system.
 /// Implements the IUnitOfWork interface for managing database transactions.
 /// </summary>
-public class ApplicationDbContext : DbContext, IUnitOfWork
+
+public class ApplicationDbContext : DbContext, IUnitOfWork, IApplicationDbContext
+
 {
     /// <summary>
     /// Initializes a new instance of the ApplicationDbContext class.
