@@ -73,6 +73,7 @@ public class ApplicationDbContext : DbContext, IUnitOfWork
     private IMovieRepository? _movieRepository;
     private ICinemaRepository? _cinemaRepository;
     private IHallRepository? _hallRepository;
+    private IPaymentRepository? _paymentRepository;
 
     // IUnitOfWork Repository Properties
     IUserRepository IUnitOfWork.Users => _userRepository ??= new UserRepository(this);
@@ -80,6 +81,7 @@ public class ApplicationDbContext : DbContext, IUnitOfWork
     IMovieRepository IUnitOfWork.Movies => _movieRepository ??= new MovieRepository(this);
     ICinemaRepository IUnitOfWork.Cinemas => _cinemaRepository ??= new CinemaRepository(this);
     IHallRepository IUnitOfWork.Halls => _hallRepository ??= new HallRepository(this);
+    IPaymentRepository IUnitOfWork.Payments => _paymentRepository ??= new PaymentRepository(this);
 
     /// <inheritdoc />
     public async Task BeginTransactionAsync(CancellationToken cancellationToken = default)
