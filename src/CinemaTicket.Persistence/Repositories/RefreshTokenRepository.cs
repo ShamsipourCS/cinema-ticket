@@ -21,8 +21,8 @@ public class RefreshTokenRepository : GenericRepository<RefreshToken>, IRefreshT
     public async Task<RefreshToken?> GetValidTokenAsync(string token, Guid userId, CancellationToken cancellationToken = default)
     {
         var now = DateTime.UtcNow;
+        // NOTE: No AsNoTracking() here because we need to modify this entity (revoke it) in RefreshTokenCommandHandler
         return await _context.Set<RefreshToken>()
-            .AsNoTracking()
             .FirstOrDefaultAsync(rt =>
                 rt.Token == token &&
                 rt.UserId == userId &&

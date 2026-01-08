@@ -19,6 +19,7 @@ public sealed class FakeUnitOfWork : IUnitOfWork
 
     public IUserRepository Users => throw new NotImplementedException("Users repository not needed for catalog handler tests.");
     public IRefreshTokenRepository RefreshTokens => throw new NotImplementedException("RefreshTokens repository not needed for catalog handler tests.");
+    public IPaymentRepository Payments => throw new NotImplementedException("Payments repository not needed for catalog handler tests.");
 
     public IMovieRepository Movies { get; }
     public ICinemaRepository Cinemas { get; }

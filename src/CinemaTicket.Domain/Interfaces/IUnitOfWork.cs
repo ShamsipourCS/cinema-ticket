@@ -18,7 +18,7 @@ public interface IUnitOfWork : IDisposable
     IHallRepository Halls { get; }
     // IShowtimeRepository Showtimes { get; }
     // ITicketRepository Tickets { get; }
-    // IPaymentRepository Payments { get; }
+    IPaymentRepository Payments { get; }
 
     /// <summary>
     /// Saves all pending changes to the database.
