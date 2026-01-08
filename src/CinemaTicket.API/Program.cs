@@ -22,7 +22,7 @@ try
         .Enrich.FromLogContext());
 
     // Add services to the container.
-
+    builder.Services.AddHostedService<CinemaTicket.Infrastructure.BackgroundJobs.ReservationCleanupService>();
     builder.Services.AddControllers();
     // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
     builder.Services.AddEndpointsApiExplorer();
