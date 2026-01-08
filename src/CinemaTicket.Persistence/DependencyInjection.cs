@@ -20,6 +20,9 @@ public static class DependencyInjection
         // Register DbContext
         services.AddDbContext<ApplicationDbContext>(options =>
             options.UseSqlServer(configuration.GetConnectionString("DefaultConnection")));
+        services.AddScoped<CinemaTicket.Application.Common.Interfaces.IApplicationDbContext>(sp =>
+    sp.GetRequiredService<CinemaTicket.Persistence.Context.ApplicationDbContext>());
+
 
         // Register Unit of Work - this provides access to all repositories
         // ApplicationDbContext implements IUnitOfWork and creates repositories internally
