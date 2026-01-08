@@ -24,6 +24,7 @@ try
         .Enrich.FromLogContext());
 
     // Add services to the container.
+    builder.Services.AddHostedService<CinemaTicket.Infrastructure.BackgroundJobs.ReservationCleanupService>();
     builder.Services.AddControllers();
     builder.Services.AddEndpointsApiExplorer();
     builder.Services.AddSwaggerGen();
