@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Threading;
 using System.Threading.Tasks;
-using CinemaTicket.Application.Common.Interfaces;
+using CinemaTicket.Domain.Interfaces;
 
 namespace CinemaTicket.Application.Tests.Fakes;
 

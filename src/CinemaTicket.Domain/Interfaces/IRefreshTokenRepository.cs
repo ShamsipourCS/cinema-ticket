@@ -1,6 +1,6 @@
 using CinemaTicket.Domain.Entities;
 
-namespace CinemaTicket.Application.Common.Interfaces;
+namespace CinemaTicket.Domain.Interfaces;
 
 /// <summary>
 /// Repository interface for RefreshToken-specific database operations.

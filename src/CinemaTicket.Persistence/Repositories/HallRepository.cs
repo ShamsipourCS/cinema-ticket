@@ -1,5 +1,5 @@
 ﻿using System.Linq.Expressions;
-using CinemaTicket.Application.Common.Interfaces;
+using CinemaTicket.Domain.Interfaces;
 using CinemaTicket.Domain.Entities;
 using CinemaTicket.Persistence.Context;
 using Microsoft.EntityFrameworkCore;

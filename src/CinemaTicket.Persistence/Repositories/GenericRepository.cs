@@ -4,8 +4,8 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Threading;
 using System.Threading.Tasks;
-using CinemaTicket.Application.Common.Interfaces;
 using CinemaTicket.Domain.Common;
+using CinemaTicket.Domain.Interfaces;
 using CinemaTicket.Persistence.Context;
 using Microsoft.EntityFrameworkCore;
 
