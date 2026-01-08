@@ -4,7 +4,7 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Threading;
 using System.Threading.Tasks;
-using CinemaTicket.Application.Common.Interfaces;
+using CinemaTicket.Domain.Interfaces;
 using CinemaTicket.Domain.Entities;
 
 namespace CinemaTicket.Application.Tests.Fakes;
