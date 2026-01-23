@@ -10,8 +10,9 @@ public class Payment : AuditableEntity
 {
     /// <summary>
     /// Gets or sets the ID of the ticket this payment is for.
+    /// Null when payment intent is created, set when booking is confirmed.
     /// </summary>
-    public Guid TicketId { get; set; }
+    public Guid? TicketId { get; set; }
 
     /// <summary>
     /// Gets or sets the external payment intent ID (e.g., from Stripe).
