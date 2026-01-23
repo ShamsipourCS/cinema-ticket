@@ -254,6 +254,68 @@ public class StripePaymentService : IStripePaymentService
     }
 
     /// <summary>
+    /// Verifies the signature of a Stripe webhook event and returns the event details.
+    /// </summary>
+    /// <param name="json">The raw JSON payload from the webhook request body.</param>
+    /// <param name="stripeSignatureHeader">The Stripe-Signature header value from the webhook request.</param>
+    /// <returns>A tuple containing the event ID, event type, and payment intent ID.</returns>
+    /// <exception cref="ArgumentException">Thrown when json or signature header is null or empty.</exception>
+    /// <exception cref="InvalidOperationException">Thrown when webhook secret is not configured.</exception>
+    /// <exception cref="UnauthorizedAccessException">Thrown when signature verification fails.</exception>
+    public (string EventId, string EventType, string? PaymentIntentId) VerifyWebhookSignature(string json, string stripeSignatureHeader)
+    {
+        if (string.IsNullOrWhiteSpace(json))
+        {
+            throw new ArgumentException("Webhook JSON payload cannot be null or empty", nameof(json));
+        }
+
+        if (string.IsNullOrWhiteSpace(stripeSignatureHeader))
+        {
+            throw new ArgumentException("Stripe signature header cannot be null or empty", nameof(stripeSignatureHeader));
+        }
+
+        if (string.IsNullOrWhiteSpace(_settings.WebhookSecret))
+        {
+            _logger.LogError("Webhook secret is not configured, cannot verify webhook signature");
+            throw new InvalidOperationException("Webhook secret is not configured");
+        }
+
+        _logger.LogDebug("Verifying webhook signature");
+
+        try
+        {
+            var stripeEvent = EventUtility.ConstructEvent(
+                json,
+                stripeSignatureHeader,
+                _settings.WebhookSecret,
+                throwOnApiVersionMismatch: false
+            );
+
+            _logger.LogDebug("Webhook signature verified successfully for event {EventId} of type {EventType}",
+                stripeEvent.Id, stripeEvent.Type);
+
+            // Extract PaymentIntent ID from event data if present
+            string? paymentIntentId = null;
+            if (stripeEvent.Data.Object is PaymentIntent paymentIntent)
+            {
+                paymentIntentId = paymentIntent.Id;
+            }
+
+            return (stripeEvent.Id, stripeEvent.Type, paymentIntentId);
+        }
+        catch (StripeException ex)
+        {
+            _logger.LogError(ex, "Webhook signature verification failed: {ErrorMessage}", ex.Message);
+            throw new UnauthorizedAccessException("Webhook signature verification failed", ex);
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Unexpected error during webhook signature verification");
+            throw;
+        }
+    }
+
+    /// <summary>
     /// Validates the Stripe configuration on service initialization.
     /// </summary>
     /// <exception cref="InvalidOperationException">Thrown when configuration is invalid or missing.</exception>
