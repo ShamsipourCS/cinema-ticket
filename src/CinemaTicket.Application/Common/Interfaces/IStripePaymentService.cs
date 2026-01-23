@@ -88,4 +88,19 @@ public interface IStripePaymentService
     Task<bool> CancelPaymentIntentAsync(
         string paymentIntentId,
         CancellationToken cancellationToken = default);
+
+    /// <summary>
+    /// Verifies the signature of a Stripe webhook event and returns the event type and payment intent ID.
+    /// </summary>
+    /// <param name="json">The raw JSON payload from the webhook request body.</param>
+    /// <param name="stripeSignatureHeader">The Stripe-Signature header value from the webhook request.</param>
+    /// <returns>A tuple containing the event ID, event type, and payment intent ID if signature verification succeeds.</returns>
+    /// <exception cref="System.UnauthorizedAccessException">Thrown when signature verification fails.</exception>
+    /// <exception cref="System.InvalidOperationException">Thrown when webhook secret is not configured.</exception>
+    /// <remarks>
+    /// This method uses the configured webhook secret to verify that the webhook event came from Stripe.
+    /// ALWAYS verify webhook signatures before processing events to prevent fake webhook attacks.
+    /// The Stripe-Signature header contains the timestamp and signature used for verification.
+    /// </remarks>
+    (string EventId, string EventType, string? PaymentIntentId) VerifyWebhookSignature(string json, string stripeSignatureHeader);
 }
