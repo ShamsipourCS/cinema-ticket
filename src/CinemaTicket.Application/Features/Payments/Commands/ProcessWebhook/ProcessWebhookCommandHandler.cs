@@ -140,7 +140,7 @@ public sealed class ProcessWebhookCommandHandler : IRequestHandler<ProcessWebhoo
         await _unitOfWork.Payments.UpdateAsync(payment);
 
         // If payment linked to ticket, confirm ticket
-        if (payment.TicketId != Guid.Empty)
+        if (payment.TicketId.HasValue)
         {
             var ticket = await _db.Tickets
                 .FirstOrDefaultAsync(t => t.Id == payment.TicketId, cancellationToken);
@@ -179,7 +179,7 @@ public sealed class ProcessWebhookCommandHandler : IRequestHandler<ProcessWebhoo
         await _unitOfWork.Payments.UpdateAsync(payment);
 
         // If payment linked to ticket, cancel ticket
-        if (payment.TicketId != Guid.Empty)
+        if (payment.TicketId.HasValue)
         {
             var ticket = await _db.Tickets
                 .FirstOrDefaultAsync(t => t.Id == payment.TicketId, cancellationToken);
@@ -216,7 +216,7 @@ public sealed class ProcessWebhookCommandHandler : IRequestHandler<ProcessWebhoo
         await _unitOfWork.Payments.UpdateAsync(payment);
 
         // If payment linked to ticket, cancel ticket
-        if (payment.TicketId != Guid.Empty)
+        if (payment.TicketId.HasValue)
         {
             var ticket = await _db.Tickets
                 .FirstOrDefaultAsync(t => t.Id == payment.TicketId, cancellationToken);
