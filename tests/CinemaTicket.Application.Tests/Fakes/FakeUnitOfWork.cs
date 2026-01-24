@@ -8,26 +8,52 @@ namespace CinemaTicket.Application.Tests.Fakes;
 public sealed class FakeUnitOfWork : IUnitOfWork
 {
     public FakeUnitOfWork(
+        IUserRepository users,
+        IRefreshTokenRepository refreshTokens,
+        IPaymentRepository payments,
         IMovieRepository movies,
         ICinemaRepository cinemas,
         IHallRepository halls)
     {
+        Users = users;
+        RefreshTokens = refreshTokens;
+        Payments = payments;
         Movies = movies;
         Cinemas = cinemas;
         Halls = halls;
     }
 
-    public IUserRepository Users => throw new NotImplementedException("Users repository not needed for catalog handler tests.");
-    public IRefreshTokenRepository RefreshTokens => throw new NotImplementedException("RefreshTokens repository not needed for catalog handler tests.");
-    public IPaymentRepository Payments => throw new NotImplementedException("Payments repository not needed for catalog handler tests.");
-    public FakeUnitOfWork()
-        : this(new FakeMovieRepository(), new FakeCinemaRepository(), new FakeHallRepository())
+    public FakeUnitOfWork(
+        IMovieRepository movies,
+        ICinemaRepository cinemas,
+        IHallRepository halls)
+        : this(
+            new FakeUserRepository(),
+            new FakeRefreshTokenRepository(),
+            new FakePaymentRepository(),
+            movies,
+            cinemas,
+            halls)
     {
     }
 
+    public FakeUnitOfWork()
+        : this(
+            new FakeUserRepository(),
+            new FakeRefreshTokenRepository(),
+            new FakePaymentRepository(),
+            new FakeMovieRepository(),
+            new FakeCinemaRepository(),
+            new FakeHallRepository())
+    {
+    }
+
+    public IUserRepository Users { get; }
+    public IRefreshTokenRepository RefreshTokens { get; }
     public IMovieRepository Movies { get; }
     public ICinemaRepository Cinemas { get; }
     public IHallRepository Halls { get; }
+    public IPaymentRepository Payments { get; }
 
     public int SaveChangesCalls { get; private set; }
     public int BeginTransactionCalls { get; private set; }
