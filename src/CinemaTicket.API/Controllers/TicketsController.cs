@@ -17,18 +17,27 @@ public sealed class TicketsController : ControllerBase
     public TicketsController(IMediator mediator) => _mediator = mediator;
 
     public sealed record CreateBookingRequest(
-        Guid UserId,
+        // UserId removed - derived from JWT authentication to prevent user impersonation
         Guid ShowtimeId,
         Guid SeatId,
         string HolderName
     );
 
     [HttpPost("bookings")]
+    [Authorize]  // Require authentication to prevent unauthorized booking creation
     [ProducesResponseType(typeof(BookingResultDto), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     public async Task<ActionResult<BookingResultDto>> CreateBooking([FromBody] CreateBookingRequest request, CancellationToken ct)
     {
+        // Extract userId from JWT claims to prevent user impersonation
+        var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+        if (string.IsNullOrEmpty(userIdClaim) || !Guid.TryParse(userIdClaim, out var userId))
+        {
+            return Unauthorized("Invalid or missing user authentication");
+        }
+
         var result = await _mediator.Send(new CreateBookingCommand(
-            request.UserId,
+            userId,  // Use authenticated user ID from JWT, not request body
             request.ShowtimeId,
             request.SeatId,
             request.HolderName
