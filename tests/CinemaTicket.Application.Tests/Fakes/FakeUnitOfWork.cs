@@ -11,6 +11,7 @@ public sealed class FakeUnitOfWork : IUnitOfWork
         IUserRepository users,
         IRefreshTokenRepository refreshTokens,
         IPaymentRepository payments,
+        ITicketRepository tickets,
         IMovieRepository movies,
         ICinemaRepository cinemas,
         IHallRepository halls)
@@ -18,9 +19,29 @@ public sealed class FakeUnitOfWork : IUnitOfWork
         Users = users;
         RefreshTokens = refreshTokens;
         Payments = payments;
+        Tickets = tickets;
         Movies = movies;
         Cinemas = cinemas;
         Halls = halls;
+    }
+
+    // Backward compatibility constructor for existing tests (old 6-parameter signature)
+    public FakeUnitOfWork(
+        IUserRepository users,
+        IRefreshTokenRepository refreshTokens,
+        IPaymentRepository payments,
+        IMovieRepository movies,
+        ICinemaRepository cinemas,
+        IHallRepository halls)
+        : this(
+            users,
+            refreshTokens,
+            payments,
+            new FakeTicketRepository(),  // Add default Tickets repository
+            movies,
+            cinemas,
+            halls)
+    {
     }
 
     public FakeUnitOfWork(
@@ -31,6 +52,7 @@ public sealed class FakeUnitOfWork : IUnitOfWork
             new FakeUserRepository(),
             new FakeRefreshTokenRepository(),
             new FakePaymentRepository(),
+            new FakeTicketRepository(),
             movies,
             cinemas,
             halls)
@@ -42,6 +64,7 @@ public sealed class FakeUnitOfWork : IUnitOfWork
             new FakeUserRepository(),
             new FakeRefreshTokenRepository(),
             new FakePaymentRepository(),
+            new FakeTicketRepository(),
             new FakeMovieRepository(),
             new FakeCinemaRepository(),
             new FakeHallRepository())
@@ -53,6 +76,7 @@ public sealed class FakeUnitOfWork : IUnitOfWork
     public IMovieRepository Movies { get; }
     public ICinemaRepository Cinemas { get; }
     public IHallRepository Halls { get; }
+    public ITicketRepository Tickets { get; }
     public IPaymentRepository Payments { get; }
 
     public int SaveChangesCalls { get; private set; }

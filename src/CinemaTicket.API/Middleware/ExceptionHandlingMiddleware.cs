@@ -99,6 +99,14 @@ public class ExceptionHandlingMiddleware
                 null
             ),
 
+            // System UnauthorizedAccessException (403 Forbidden)
+            // This is different from Domain.Exceptions.UnauthorizedAccessException
+            System.UnauthorizedAccessException unauthorizedEx => (
+                StatusCodes.Status403Forbidden,
+                "Access denied",
+                null
+            ),
+
             // All other exceptions (500 Internal Server Error)
             _ => (
                 StatusCodes.Status500InternalServerError,
@@ -112,6 +120,15 @@ public class ExceptionHandlingMiddleware
         {
             _logger.LogError(exception,
                 "Server error occurred. TraceId: {TraceId}",
+                context.TraceIdentifier);
+        }
+        else if (statusCode == StatusCodes.Status403Forbidden)
+        {
+            // Security event: log unauthorized access attempts
+            _logger.LogWarning(exception,
+                "Unauthorized access attempt to {Path} from {User}. TraceId: {TraceId}",
+                context.Request.Path,
+                context.User.Identity?.Name ?? "Anonymous",
                 context.TraceIdentifier);
         }
         else if (statusCode >= 400)

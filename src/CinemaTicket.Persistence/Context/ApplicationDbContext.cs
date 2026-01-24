@@ -77,6 +77,7 @@ public class ApplicationDbContext : DbContext, IUnitOfWork, IApplicationDbContex
     private IMovieRepository? _movieRepository;
     private ICinemaRepository? _cinemaRepository;
     private IHallRepository? _hallRepository;
+    private ITicketRepository? _ticketRepository;
     private IPaymentRepository? _paymentRepository;
 
     // IUnitOfWork Repository Properties
@@ -85,6 +86,7 @@ public class ApplicationDbContext : DbContext, IUnitOfWork, IApplicationDbContex
     IMovieRepository IUnitOfWork.Movies => _movieRepository ??= new MovieRepository(this);
     ICinemaRepository IUnitOfWork.Cinemas => _cinemaRepository ??= new CinemaRepository(this);
     IHallRepository IUnitOfWork.Halls => _hallRepository ??= new HallRepository(this);
+    ITicketRepository IUnitOfWork.Tickets => _ticketRepository ??= new TicketRepository(this);
     IPaymentRepository IUnitOfWork.Payments => _paymentRepository ??= new PaymentRepository(this);
 
     /// <inheritdoc />

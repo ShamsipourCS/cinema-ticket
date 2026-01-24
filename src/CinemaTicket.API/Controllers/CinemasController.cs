@@ -4,6 +4,7 @@ using CinemaTicket.Application.Features.Cinemas.Commands.UpdateCinema;
 using CinemaTicket.Application.Features.Cinemas.Queries.GetCinemaById;
 using CinemaTicket.Application.Features.Cinemas.Queries.GetCinemas;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CinemaTicket.API.Controllers;
@@ -118,6 +119,7 @@ public class CinemasController : ControllerBase
     ///     POST /api/Cinemas
     /// </remarks>
     [HttpPost]
+    [Authorize(Policy = "AdminOnly")]
     [ProducesResponseType(StatusCodes.Status201Created)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> CreateCinema(
@@ -145,6 +147,7 @@ public class CinemasController : ControllerBase
     ///     PUT /api/Cinemas/{id}
     /// </remarks>
     [HttpPut("{id:guid}")]
+    [Authorize(Policy = "AdminOnly")]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -183,6 +186,7 @@ public class CinemasController : ControllerBase
     ///     DELETE /api/Cinemas/{id}
     /// </remarks>
     [HttpDelete("{id:guid}")]
+    [Authorize(Policy = "AdminOnly")]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
