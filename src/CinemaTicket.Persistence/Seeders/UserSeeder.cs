@@ -33,7 +33,7 @@ public static class UserSeeder
             // Admin User
             new User
             {
-                Id = new Guid("USER0001-0001-0001-0001-000000000001"),
+                Id = new Guid("A0000001-0001-0001-0001-000000000001"),
                 Email = "admin@cinematicket.com",
                 FirstName = "System",
                 LastName = "Administrator",
@@ -45,7 +45,7 @@ public static class UserSeeder
             // Customer Users
             new User
             {
-                Id = new Guid("USER0002-0001-0001-0001-000000000002"),
+                Id = new Guid("C0000001-0001-0001-0001-000000000002"),
                 Email = "john.doe@example.com",
                 FirstName = "John",
                 LastName = "Doe",
@@ -55,7 +55,7 @@ public static class UserSeeder
             },
             new User
             {
-                Id = new Guid("USER0003-0001-0001-0001-000000000003"),
+                Id = new Guid("C0000002-0001-0001-0001-000000000003"),
                 Email = "jane.smith@example.com",
                 FirstName = "Jane",
                 LastName = "Smith",
@@ -65,7 +65,7 @@ public static class UserSeeder
             },
             new User
             {
-                Id = new Guid("USER0004-0001-0001-0001-000000000004"),
+                Id = new Guid("C0000003-0001-0001-0001-000000000004"),
                 Email = "michael.brown@example.com",
                 FirstName = "Michael",
                 LastName = "Brown",

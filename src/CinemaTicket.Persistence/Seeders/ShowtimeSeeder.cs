@@ -70,7 +70,7 @@ public static class ShowtimeSeeder
 
                     var showtime = new Showtime
                     {
-                        Id = new Guid($"SHOWTIME{showtimeIdCounter:D4}-0001-0001-0001-000000000001"),
+                        Id = Guid.NewGuid(), // Use auto-generated GUIDs for showtimes
                         MovieId = movie.Id,
                         HallId = hall.Id,
                         StartTime = startTime,

@@ -74,7 +74,7 @@ public static class TicketSeeder
 
             var ticket = new Ticket
             {
-                Id = new Guid($"TICKET0{ticketIdCounter}-0001-0001-0001-000000000001"),
+                Id = Guid.NewGuid(), // Use auto-generated GUIDs for tickets
                 UserId = user.Id,
                 ShowtimeId = showtime.Id,
                 SeatId = seat.Id,

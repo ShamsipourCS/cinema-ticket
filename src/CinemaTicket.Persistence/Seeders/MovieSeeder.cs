@@ -24,7 +24,7 @@ public static class MovieSeeder
         {
             new Movie
             {
-                Id = new Guid("MOVIE001-0001-0001-0001-000000000001"),
+                Id = new Guid("10000001-0001-0001-0001-000000000001"),
                 Title = "Interstellar",
                 Description = "A team of explorers travel through a wormhole in space in an attempt to ensure humanity's survival.",
                 Genre = "Sci-Fi",
@@ -36,7 +36,7 @@ public static class MovieSeeder
             },
             new Movie
             {
-                Id = new Guid("MOVIE002-0001-0001-0001-000000000002"),
+                Id = new Guid("10000002-0001-0001-0001-000000000002"),
                 Title = "The Matrix",
                 Description = "A computer hacker learns from mysterious rebels about the true nature of his reality and his role in the war against its controllers.",
                 Genre = "Action",
@@ -48,7 +48,7 @@ public static class MovieSeeder
             },
             new Movie
             {
-                Id = new Guid("MOVIE003-0001-0001-0001-000000000003"),
+                Id = new Guid("10000003-0001-0001-0001-000000000003"),
                 Title = "Inception",
                 Description = "A thief who steals corporate secrets through the use of dream-sharing technology is given the inverse task of planting an idea into the mind of a C.E.O.",
                 Genre = "Sci-Fi",
@@ -60,7 +60,7 @@ public static class MovieSeeder
             },
             new Movie
             {
-                Id = new Guid("MOVIE004-0001-0001-0001-000000000004"),
+                Id = new Guid("10000004-0001-0001-0001-000000000004"),
                 Title = "The Shawshank Redemption",
                 Description = "Two imprisoned men bond over a number of years, finding solace and eventual redemption through acts of common decency.",
                 Genre = "Drama",
@@ -72,7 +72,7 @@ public static class MovieSeeder
             },
             new Movie
             {
-                Id = new Guid("MOVIE005-0001-0001-0001-000000000005"),
+                Id = new Guid("10000005-0001-0001-0001-000000000005"),
                 Title = "The Dark Knight",
                 Description = "When the menace known as the Joker wreaks havoc and chaos on the people of Gotham, Batman must accept one of the greatest psychological and physical tests of his ability to fight injustice.",
                 Genre = "Action",
@@ -84,7 +84,7 @@ public static class MovieSeeder
             },
             new Movie
             {
-                Id = new Guid("MOVIE006-0001-0001-0001-000000000006"),
+                Id = new Guid("10000006-0001-0001-0001-000000000006"),
                 Title = "Pulp Fiction",
                 Description = "The lives of two mob hitmen, a boxer, a gangster and his wife intertwine in four tales of violence and redemption.",
                 Genre = "Crime",
@@ -96,7 +96,7 @@ public static class MovieSeeder
             },
             new Movie
             {
-                Id = new Guid("MOVIE007-0001-0001-0001-000000000007"),
+                Id = new Guid("10000007-0001-0001-0001-000000000007"),
                 Title = "Forrest Gump",
                 Description = "The presidencies of Kennedy and Johnson, the Vietnam War, and other historical events unfold from the perspective of an Alabama man with an IQ of 75.",
                 Genre = "Drama",
@@ -108,7 +108,7 @@ public static class MovieSeeder
             },
             new Movie
             {
-                Id = new Guid("MOVIE008-0001-0001-0001-000000000008"),
+                Id = new Guid("10000008-0001-0001-0001-000000000008"),
                 Title = "The Godfather",
                 Description = "The aging patriarch of an organized crime dynasty transfers control of his clandestine empire to his reluctant son.",
                 Genre = "Crime",
@@ -120,7 +120,7 @@ public static class MovieSeeder
             },
             new Movie
             {
-                Id = new Guid("MOVIE009-0001-0001-0001-000000000009"),
+                Id = new Guid("10000009-0001-0001-0001-000000000009"),
                 Title = "Avengers: Endgame",
                 Description = "After the devastating events of Infinity War, the Avengers assemble once more to reverse Thanos' actions and restore balance to the universe.",
                 Genre = "Action",
@@ -132,7 +132,7 @@ public static class MovieSeeder
             },
             new Movie
             {
-                Id = new Guid("MOVIE010-0001-0001-0001-000000000010"),
+                Id = new Guid("1000000A-0001-0001-0001-00000000000A"),
                 Title = "Parasite",
                 Description = "Greed and class discrimination threaten the newly formed symbiotic relationship between the wealthy Park family and the destitute Kim clan.",
                 Genre = "Thriller",

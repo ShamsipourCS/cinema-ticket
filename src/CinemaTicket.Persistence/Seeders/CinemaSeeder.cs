@@ -26,7 +26,7 @@ public static class CinemaSeeder
         {
             new Cinema
             {
-                Id = new Guid("CINEMA01-0001-0001-0001-000000000001"),
+                Id = new Guid("20000001-0001-0001-0001-000000000001"),
                 Name = "Cinema One - Downtown",
                 Address = "123 Main Street",
                 City = "Tehran",
@@ -35,7 +35,7 @@ public static class CinemaSeeder
             },
             new Cinema
             {
-                Id = new Guid("CINEMA02-0001-0001-0001-000000000002"),
+                Id = new Guid("20000002-0001-0001-0001-000000000002"),
                 Name = "Cinema Two - Westside",
                 Address = "456 Elm Street",
                 City = "Tehran",
@@ -44,7 +44,7 @@ public static class CinemaSeeder
             },
             new Cinema
             {
-                Id = new Guid("CINEMA03-0001-0001-0001-000000000003"),
+                Id = new Guid("20000003-0001-0001-0001-000000000003"),
                 Name = "Cinema Three - Eastside",
                 Address = "789 Oak Avenue",
                 City = "Tehran",
@@ -62,8 +62,8 @@ public static class CinemaSeeder
             // Cinema One - Downtown (2 halls)
             new Hall
             {
-                Id = new Guid("HALL0001-0001-0001-0001-000000000001"),
-                CinemaId = new Guid("CINEMA01-0001-0001-0001-000000000001"),
+                Id = new Guid("30000001-0001-0001-0001-000000000001"),
+                CinemaId = new Guid("20000001-0001-0001-0001-000000000001"),
                 Name = "Hall A",
                 Rows = 10,
                 SeatsPerRow = 15,
@@ -71,8 +71,8 @@ public static class CinemaSeeder
             },
             new Hall
             {
-                Id = new Guid("HALL0002-0001-0001-0001-000000000002"),
-                CinemaId = new Guid("CINEMA01-0001-0001-0001-000000000001"),
+                Id = new Guid("30000002-0001-0001-0001-000000000002"),
+                CinemaId = new Guid("20000001-0001-0001-0001-000000000001"),
                 Name = "Hall B",
                 Rows = 12,
                 SeatsPerRow = 20,
@@ -80,8 +80,8 @@ public static class CinemaSeeder
             },
             new Hall
             {
-                Id = new Guid("HALL0003-0001-0001-0001-000000000003"),
-                CinemaId = new Guid("CINEMA01-0001-0001-0001-000000000001"),
+                Id = new Guid("30000003-0001-0001-0001-000000000003"),
+                CinemaId = new Guid("20000001-0001-0001-0001-000000000001"),
                 Name = "Hall C",
                 Rows = 15,
                 SeatsPerRow = 20,
@@ -91,8 +91,8 @@ public static class CinemaSeeder
             // Cinema Two - Westside (3 halls)
             new Hall
             {
-                Id = new Guid("HALL0004-0001-0001-0001-000000000004"),
-                CinemaId = new Guid("CINEMA02-0001-0001-0001-000000000002"),
+                Id = new Guid("30000004-0001-0001-0001-000000000004"),
+                CinemaId = new Guid("20000002-0001-0001-0001-000000000002"),
                 Name = "Hall D",
                 Rows = 8,
                 SeatsPerRow = 12,
@@ -100,8 +100,8 @@ public static class CinemaSeeder
             },
             new Hall
             {
-                Id = new Guid("HALL0005-0001-0001-0001-000000000005"),
-                CinemaId = new Guid("CINEMA02-0001-0001-0001-000000000002"),
+                Id = new Guid("30000005-0001-0001-0001-000000000005"),
+                CinemaId = new Guid("20000002-0001-0001-0001-000000000002"),
                 Name = "Hall E",
                 Rows = 10,
                 SeatsPerRow = 16,
@@ -109,8 +109,8 @@ public static class CinemaSeeder
             },
             new Hall
             {
-                Id = new Guid("HALL0006-0001-0001-0001-000000000006"),
-                CinemaId = new Guid("CINEMA02-0001-0001-0001-000000000002"),
+                Id = new Guid("30000006-0001-0001-0001-000000000006"),
+                CinemaId = new Guid("20000002-0001-0001-0001-000000000002"),
                 Name = "Hall F",
                 Rows = 12,
                 SeatsPerRow = 18,
@@ -120,8 +120,8 @@ public static class CinemaSeeder
             // Cinema Three - Eastside (3 halls)
             new Hall
             {
-                Id = new Guid("HALL0007-0001-0001-0001-000000000007"),
-                CinemaId = new Guid("CINEMA03-0001-0001-0001-000000000003"),
+                Id = new Guid("30000007-0001-0001-0001-000000000007"),
+                CinemaId = new Guid("20000003-0001-0001-0001-000000000003"),
                 Name = "Hall G",
                 Rows = 10,
                 SeatsPerRow = 18,
@@ -129,8 +129,8 @@ public static class CinemaSeeder
             },
             new Hall
             {
-                Id = new Guid("HALL0008-0001-0001-0001-000000000008"),
-                CinemaId = new Guid("CINEMA03-0001-0001-0001-000000000003"),
+                Id = new Guid("30000008-0001-0001-0001-000000000008"),
+                CinemaId = new Guid("20000003-0001-0001-0001-000000000003"),
                 Name = "Hall H",
                 Rows = 14,
                 SeatsPerRow = 20,
@@ -138,8 +138,8 @@ public static class CinemaSeeder
             },
             new Hall
             {
-                Id = new Guid("HALL0009-0001-0001-0001-000000000009"),
-                CinemaId = new Guid("CINEMA03-0001-0001-0001-000000000003"),
+                Id = new Guid("30000009-0001-0001-0001-000000000009"),
+                CinemaId = new Guid("20000003-0001-0001-0001-000000000003"),
                 Name = "Hall I",
                 Rows = 16,
                 SeatsPerRow = 22,
