@@ -78,6 +78,28 @@ try
 
     var app = builder.Build();
 
+    // Apply database migrations and seed data in Development
+    if (app.Environment.IsDevelopment())
+    {
+        using (var scope = app.Services.CreateScope())
+        {
+            var services = scope.ServiceProvider;
+            var context = services.GetRequiredService<ApplicationDbContext>();
+            var logger = services.GetRequiredService<ILogger<Program>>();
+
+            try
+            {
+                logger.LogInformation("Starting database seeding...");
+                await DatabaseSeeder.SeedAsync(context, services);
+                logger.LogInformation("Database seeding completed successfully.");
+            }
+            catch (Exception ex)
+            {
+                logger.LogError(ex, "An error occurred while seeding the database.");
+            }
+        }
+    }
+
     // Configure the HTTP request pipeline.
 
     // Exception Handling Middleware (must be FIRST in pipeline)
