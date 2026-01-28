@@ -8,26 +8,76 @@ namespace CinemaTicket.Application.Tests.Fakes;
 public sealed class FakeUnitOfWork : IUnitOfWork
 {
     public FakeUnitOfWork(
+        IUserRepository users,
+        IRefreshTokenRepository refreshTokens,
+        IPaymentRepository payments,
+        ITicketRepository tickets,
         IMovieRepository movies,
         ICinemaRepository cinemas,
         IHallRepository halls)
     {
+        Users = users;
+        RefreshTokens = refreshTokens;
+        Payments = payments;
+        Tickets = tickets;
         Movies = movies;
         Cinemas = cinemas;
         Halls = halls;
     }
 
-    public IUserRepository Users => throw new NotImplementedException("Users repository not needed for catalog handler tests.");
-    public IRefreshTokenRepository RefreshTokens => throw new NotImplementedException("RefreshTokens repository not needed for catalog handler tests.");
-    public IPaymentRepository Payments => throw new NotImplementedException("Payments repository not needed for catalog handler tests.");
-    public FakeUnitOfWork()
-        : this(new FakeMovieRepository(), new FakeCinemaRepository(), new FakeHallRepository())
+    // Backward compatibility constructor for existing tests (old 6-parameter signature)
+    public FakeUnitOfWork(
+        IUserRepository users,
+        IRefreshTokenRepository refreshTokens,
+        IPaymentRepository payments,
+        IMovieRepository movies,
+        ICinemaRepository cinemas,
+        IHallRepository halls)
+        : this(
+            users,
+            refreshTokens,
+            payments,
+            new FakeTicketRepository(),  // Add default Tickets repository
+            movies,
+            cinemas,
+            halls)
     {
     }
 
+    public FakeUnitOfWork(
+        IMovieRepository movies,
+        ICinemaRepository cinemas,
+        IHallRepository halls)
+        : this(
+            new FakeUserRepository(),
+            new FakeRefreshTokenRepository(),
+            new FakePaymentRepository(),
+            new FakeTicketRepository(),
+            movies,
+            cinemas,
+            halls)
+    {
+    }
+
+    public FakeUnitOfWork()
+        : this(
+            new FakeUserRepository(),
+            new FakeRefreshTokenRepository(),
+            new FakePaymentRepository(),
+            new FakeTicketRepository(),
+            new FakeMovieRepository(),
+            new FakeCinemaRepository(),
+            new FakeHallRepository())
+    {
+    }
+
+    public IUserRepository Users { get; }
+    public IRefreshTokenRepository RefreshTokens { get; }
     public IMovieRepository Movies { get; }
     public ICinemaRepository Cinemas { get; }
     public IHallRepository Halls { get; }
+    public ITicketRepository Tickets { get; }
+    public IPaymentRepository Payments { get; }
 
     public int SaveChangesCalls { get; private set; }
     public int BeginTransactionCalls { get; private set; }

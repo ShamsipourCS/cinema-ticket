@@ -1,4 +1,5 @@
 using CinemaTicket.Application.Features.Payments.Commands.CreatePaymentIntent;
+using CinemaTicket.Application.Features.Payments.Commands.ProcessWebhook;
 using CinemaTicket.Application.Features.Payments.DTOs;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
@@ -69,5 +70,76 @@ public class PaymentsController : ControllerBase
     {
         var result = await _mediator.Send(command, cancellationToken);
         return Ok(result);
+    }
+
+    /// <summary>
+    /// Webhook endpoint for Stripe event notifications.
+    /// Processes payment status changes asynchronously.
+    /// </summary>
+    /// <param name="cancellationToken">Cancellation token.</param>
+    /// <returns>200 OK if event processed successfully, 400 if signature verification fails.</returns>
+    /// <response code="200">Webhook event processed successfully.</response>
+    /// <response code="400">Invalid webhook signature.</response>
+    /// <remarks>
+    /// This endpoint is called by Stripe when payment events occur.
+    /// It verifies the webhook signature before processing to ensure authenticity.
+    ///
+    /// Supported events:
+    /// - payment_intent.succeeded: Payment completed successfully
+    /// - payment_intent.payment_failed: Payment failed
+    /// - payment_intent.canceled: Payment was canceled
+    ///
+    /// Configuration:
+    /// 1. Set up webhook endpoint in Stripe Dashboard: https://your-api-domain/api/payments/webhook
+    /// 2. Configure webhook secret in appsettings.json: StripeSettings:WebhookSecret
+    /// 3. For local testing, use Stripe CLI: stripe listen --forward-to https://localhost:7xxx/api/payments/webhook
+    /// </remarks>
+    [HttpPost("webhook")]
+    [AllowAnonymous] // Webhooks come from Stripe, not authenticated users
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    public async Task<IActionResult> StripeWebhook(CancellationToken cancellationToken)
+    {
+        _logger.LogInformation("Received Stripe webhook event");
+
+        try
+        {
+            // Read raw request body (required for signature verification)
+            using var reader = new StreamReader(Request.Body);
+            var json = await reader.ReadToEndAsync(cancellationToken);
+
+            // Get Stripe signature from header
+            var signature = Request.Headers["Stripe-Signature"].ToString();
+
+            if (string.IsNullOrEmpty(signature))
+            {
+                _logger.LogWarning("Stripe webhook received without signature header");
+                return BadRequest(new { Error = "Missing Stripe-Signature header" });
+            }
+
+            // Send to handler via MediatR
+            var command = new ProcessWebhookCommand(json, signature);
+            var success = await _mediator.Send(command, cancellationToken);
+
+            if (success)
+            {
+                _logger.LogInformation("Webhook processed successfully");
+                return Ok();
+            }
+
+            return BadRequest(new { Error = "Webhook processing failed" });
+        }
+        catch (UnauthorizedAccessException ex)
+        {
+            _logger.LogWarning(ex, "Webhook signature verification failed");
+            return BadRequest(new { Error = "Invalid webhook signature" });
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Error processing webhook");
+            // Return 500 so Stripe retries the webhook
+            return StatusCode(StatusCodes.Status500InternalServerError,
+                new { Error = "Internal server error processing webhook" });
+        }
     }
 }

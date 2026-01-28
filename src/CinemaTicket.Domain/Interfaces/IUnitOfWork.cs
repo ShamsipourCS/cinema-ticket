@@ -17,7 +17,7 @@ public interface IUnitOfWork : IDisposable
     ICinemaRepository Cinemas { get; }
     IHallRepository Halls { get; }
     // IShowtimeRepository Showtimes { get; }
-    // ITicketRepository Tickets { get; }
+    ITicketRepository Tickets { get; }
     IPaymentRepository Payments { get; }
 
     /// <summary>
