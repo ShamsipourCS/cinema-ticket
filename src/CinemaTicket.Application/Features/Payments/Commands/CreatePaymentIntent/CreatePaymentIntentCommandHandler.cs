@@ -49,6 +49,13 @@ public sealed class CreatePaymentIntentCommandHandler : IRequestHandler<CreatePa
         metadata["Purpose"] = "TicketBooking";
         metadata["RequestId"] = Guid.NewGuid().ToString();
 
+        // Extract ticketId from metadata if provided (for linking payment to existing booking)
+        Guid? ticketId = null;
+        if (metadata.TryGetValue("ticketId", out var ticketIdStr) && Guid.TryParse(ticketIdStr, out var parsedTicketId))
+        {
+            ticketId = parsedTicketId;
+        }
+
         // Create payment intent with Stripe
         var currency = request.Currency ?? "usd";
         var paymentIntent = await _stripePaymentService.CreatePaymentIntentAsync(
@@ -63,8 +70,8 @@ public sealed class CreatePaymentIntentCommandHandler : IRequestHandler<CreatePa
             StripePaymentIntentId = paymentIntent.PaymentIntentId,
             Amount = request.Amount / 100m, // Convert cents to dollars
             Currency = currency,
-            Status = PaymentStatus.Pending
-            // TicketId will be set later when booking is completed
+            Status = PaymentStatus.Pending,
+            TicketId = ticketId // Link to ticket if provided in metadata
         };
 
         await _unitOfWork.Payments.AddAsync(payment, cancellationToken);
