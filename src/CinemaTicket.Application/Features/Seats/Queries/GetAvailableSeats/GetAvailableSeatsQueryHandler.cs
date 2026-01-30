@@ -29,7 +29,9 @@ public sealed class GetAvailableSeatsQueryHandler : IRequestHandler<GetAvailable
             .ToListAsync(cancellationToken);
 
         var takenSeatIds = await _db.Tickets.AsNoTracking()
-            .Where(t => t.ShowtimeId == showtime.Id && t.Status != TicketStatus.Cancelled)
+            .Where(t => t.ShowtimeId == showtime.Id
+                    && t.Status != TicketStatus.Cancelled
+                    && t.Status != TicketStatus.Expired)
             .Select(t => t.SeatId)
             .Distinct()
             .ToListAsync(cancellationToken);

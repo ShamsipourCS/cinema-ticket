@@ -1,8 +1,9 @@
 using MediatR;
 using CinemaTicket.Application.Features.Showtimes.DTOs;
 
+namespace CinemaTicket.Application.Features.Showtimes.Commands.UpdateShowtime;
 
-public class UpdateShowtimeCommand : IRequest<ShowtimeDto>
+public sealed class UpdateShowtimeCommand : IRequest<ShowtimeDto>
 {
     public Guid ShowtimeId { get; set; }
     public Guid MovieId { get; set; }

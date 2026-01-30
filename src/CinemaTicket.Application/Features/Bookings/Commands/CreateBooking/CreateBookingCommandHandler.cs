@@ -19,7 +19,7 @@ public sealed class CreateBookingCommandHandler : IRequestHandler<CreateBookingC
         // Serializable transaction to prevent double booking under concurrency
         var txOptions = new TransactionOptions
         {
-            IsolationLevel = System.Transactions.IsolationLevel.Serializable,
+            IsolationLevel = IsolationLevel.Serializable,
             Timeout = TimeSpan.FromSeconds(30)
         };
 
@@ -27,6 +27,13 @@ public sealed class CreateBookingCommandHandler : IRequestHandler<CreateBookingC
             TransactionScopeOption.Required,
             txOptions,
             TransactionScopeAsyncFlowOption.Enabled);
+
+        // 0) User exists (avoid orphan tickets)
+        var userExists = await _db.Users.AsNoTracking()
+            .AnyAsync(u => u.Id == request.UserId, cancellationToken);
+
+        if (!userExists)
+            throw new KeyNotFoundException("User not found.");
 
         // 1) Showtime exists & active
         var showtime = await _db.Showtimes
@@ -48,20 +55,20 @@ public sealed class CreateBookingCommandHandler : IRequestHandler<CreateBookingC
         if (seat.HallId != showtime.HallId)
             throw new InvalidOperationException("Seat does not belong to the showtime hall.");
 
-        // 3) Ensure seat is not already reserved/confirmed
+        // 3) Ensure seat is not already reserved/confirmed (Expired/Cancelled should NOT block)
         var existsActiveTicket = await _db.Tickets.AnyAsync(t =>
-            t.ShowtimeId == request.ShowtimeId &&
-            t.SeatId == request.SeatId &&
-            t.Status != TicketStatus.Cancelled,
+                t.ShowtimeId == request.ShowtimeId &&
+                t.SeatId == request.SeatId &&
+                t.Status != TicketStatus.Cancelled &&
+                t.Status != TicketStatus.Expired,
             cancellationToken);
 
         if (existsActiveTicket)
             throw new InvalidOperationException("Seat is already reserved.");
 
-        // 4) Create ticket as Pending reservation
+        // 4) Create ticket as Pending reservation (do NOT manually set Id)
         var ticket = new Ticket
         {
-            Id = Guid.NewGuid(),
             UserId = request.UserId,
             ShowtimeId = request.ShowtimeId,
             SeatId = request.SeatId,
@@ -74,7 +81,6 @@ public sealed class CreateBookingCommandHandler : IRequestHandler<CreateBookingC
         _db.Tickets.Add(ticket);
         await _db.SaveChangesAsync(cancellationToken);
 
-        // commit
         scope.Complete();
 
         return new BookingResultDto(
@@ -91,7 +97,7 @@ public sealed class CreateBookingCommandHandler : IRequestHandler<CreateBookingC
     {
         var price = basePrice * multiplier;
 
-        // محافظه‌کارانه
+        // Defensive: ensure non-negative price
         if (price < 0)
             price = 0;
 
@@ -100,7 +106,6 @@ public sealed class CreateBookingCommandHandler : IRequestHandler<CreateBookingC
 
     private static string GenerateTicketNumber()
     {
-        // Example: 20260108-<10 chars>
         var suffix = Guid.NewGuid().ToString("N")[..10].ToUpperInvariant();
         return $"{DateTime.UtcNow:yyyyMMdd}-{suffix}";
     }
