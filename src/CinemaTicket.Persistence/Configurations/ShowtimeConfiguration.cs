@@ -21,7 +21,12 @@ namespace CinemaTicket.Persistence.Configurations
             builder.HasOne(s => s.Hall)
                    .WithMany(h => h.Showtimes)
                    .HasForeignKey(s => s.HallId)
-                   .OnDelete(DeleteBehavior.Restrict); 
+                   .OnDelete(DeleteBehavior.Restrict);
+
+            builder.HasIndex(s => s.StartTime);
+
+            builder.HasCheckConstraint("CK_Showtime_EndAfterStart", "[EndTime] > [StartTime]");
+
         }
     }
 }

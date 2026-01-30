@@ -21,7 +21,14 @@ namespace CinemaTicket.Persistence.Configurations
 
             builder.Property(p => p.Status)
                    .HasConversion<string>()  
-                   .HasMaxLength(50);         
+                   .HasMaxLength(50);
+
+            builder.Property(p => p.Status)
+                   .IsRequired()
+                   .HasConversion<string>()
+                   .HasMaxLength(50);
+
+
         }
     }
 }
