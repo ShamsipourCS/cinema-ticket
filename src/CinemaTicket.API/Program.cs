@@ -5,6 +5,7 @@ using CinemaTicket.Persistence;
 using CinemaTicket.Persistence.Context;
 using CinemaTicket.Persistence.Seeders;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.OpenApi.Models;
 using Serilog;
 
 // Configure Serilog bootstrap logger for startup errors
@@ -33,7 +34,29 @@ try
     builder.Services.AddHttpContextAccessor();
     builder.Services.AddScoped<IAuthorizationHandler, CinemaTicket.API.Authorization.TicketOwnershipHandler>();
     builder.Services.AddEndpointsApiExplorer();
-    builder.Services.AddSwaggerGen();
+    builder.Services.AddSwaggerGen(options =>
+    {
+        var jwtSecurityScheme = new OpenApiSecurityScheme
+        {
+            Name = "Authorization",
+            Description = "Enter 'Bearer {token}'",
+            In = ParameterLocation.Header,
+            Type = SecuritySchemeType.Http,
+            Scheme = "Bearer",
+            BearerFormat = "JWT",
+            Reference = new OpenApiReference
+            {
+                Type = ReferenceType.SecurityScheme,
+                Id = "Bearer"
+            }
+        };
+
+        options.AddSecurityDefinition("Bearer", jwtSecurityScheme);
+        options.AddSecurityRequirement(new OpenApiSecurityRequirement
+        {
+            [jwtSecurityScheme] = Array.Empty<string>()
+        });
+    });
 
     builder.Services.AddPersistence(builder.Configuration);
     builder.Services.AddInfrastructure(builder.Configuration);

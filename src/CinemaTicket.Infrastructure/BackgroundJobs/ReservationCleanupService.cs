@@ -14,7 +14,7 @@ public sealed class ReservationCleanupService : BackgroundService
     private readonly ILogger<ReservationCleanupService> _logger;
 
     private static readonly TimeSpan RunEvery = TimeSpan.FromMinutes(1);
-    private static readonly TimeSpan PendingTtl = TimeSpan.FromMinutes(15);
+    private static readonly TimeSpan PendingTtl = TimeSpan.FromMinutes(10);
 
     public ReservationCleanupService(IServiceScopeFactory scopeFactory, ILogger<ReservationCleanupService> logger)
     {
@@ -66,8 +66,8 @@ public sealed class ReservationCleanupService : BackgroundService
         // Process each expired ticket
         foreach (var ticket in oldPendingTickets)
         {
-            // Update ticket status to Cancelled
-            ticket.Status = TicketStatus.Cancelled;
+            // Update ticket status to Expired
+            ticket.Status = TicketStatus.Expired;
 
             // If ticket has an associated payment, attempt to cancel the payment intent
             if (ticket.Payment is not null && ticket.Payment.Status == PaymentStatus.Pending)
@@ -112,7 +112,7 @@ public sealed class ReservationCleanupService : BackgroundService
 
         // Log summary
         _logger.LogInformation(
-            "ReservationCleanupService: Cancelled {TicketCount} expired tickets, " +
+            "ReservationCleanupService: Expired {TicketCount} pending tickets, " +
             "canceled {PaymentCount} payment intents, {FailedCount} payment cancellations failed",
             oldPendingTickets.Count, canceledPaymentCount, failedPaymentCancellations.Count);
 

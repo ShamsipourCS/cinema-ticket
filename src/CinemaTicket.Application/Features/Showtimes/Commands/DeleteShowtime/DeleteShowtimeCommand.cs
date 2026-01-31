@@ -1,12 +1,5 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using MediatR;
 
-namespace CinemaTicket.Application.Features.Showtimes.Commands.DeleteShowtime
-{
-    internal class DeleteShowtimeCommand
-    {
-    }
-}
+namespace CinemaTicket.Application.Features.Showtimes.Commands.DeleteShowtime;
+
+public sealed record DeleteShowtimeCommand(Guid ShowtimeId) : IRequest;
