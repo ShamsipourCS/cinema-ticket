@@ -19,15 +19,9 @@ namespace CinemaTicket.Persistence.Configurations
             builder.Property(p => p.StripePaymentIntentId)
                    .HasMaxLength(200);
 
+            // Persist PaymentStatus as int to match the existing DB schema.
             builder.Property(p => p.Status)
-                   .HasConversion<string>()  
-                   .HasMaxLength(50);
-
-            builder.Property(p => p.Status)
-                   .IsRequired()
-                   .HasConversion<string>()
-                   .HasMaxLength(50);
-
+                   .IsRequired();
 
         }
     }
