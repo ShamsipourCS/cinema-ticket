@@ -9,4 +9,4 @@ public sealed record GetShowtimesQuery(
     DateTime? From,
     DateTime? To,
     bool? IsActive
-) : IRequest<IReadOnlyList<ShowtimeListItemDto>>;
+) : IRequest<IReadOnlyList<ShowtimeDto>>;
