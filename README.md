@@ -37,7 +37,7 @@
 
 ---
 
-### 📚 ابوالفظل اسمعیل بیگی (Catalog Management)
+### 📚 ابوالفضل اسمعیل بیگی (Catalog Management)
 **تمرکز**: Standard CRUD Operations - Movies & Cinemas
 
 **وظایف اصلی**:
@@ -85,17 +85,17 @@
 
 ### Phase 1: Foundation
 - **علی شامنصوری**: Project setup, base classes, DbContext skeleton → **BLOCKS** other developers work
-- **ابوالفظل اسمعیل بیگی**: Catalog domain entities + configurations (after Ali Shamansouri merge)
+- **ابوالفضل اسمعیل بیگی**: Catalog domain entities + configurations (after Ali Shamansouri merge)
 - **امیرمهدی علیپور تاجانی**: Booking domain entities + configurations (after Ali Shamansouri merge)
 
 ### Phase 2: Application Core
 - **علی شامنصوری**: MediatR behaviors, Stripe service, seeder infrastructure + user/booking seeders, review PRs
-- **ابوالفظل اسمعیل بیگی**: Movie/Cinema CQRS handlers + validators, catalog seeders (movies, cinemas, halls, seats)
+- **ابوالفضل اسمعیل بیگی**: Movie/Cinema CQRS handlers + validators, catalog seeders (movies, cinemas, halls, seats)
 - **امیرمهدی علیپور تاجانی**: Showtime CQRS handlers + seat availability queries
 
 ### Phase 3: Advanced Logic & API
 - **علی شامنصوری**: Auth handlers, payment intent handler, webhook implementation, DI wiring
-- **ابوالفظل اسمعیل بیگی**: Controllers, unit tests for catalog
+- **ابوالفضل اسمعیل بیگی**: Controllers, unit tests for catalog
 - **امیرمهدی علیپور تاجانی**: Booking transaction logic, background jobs
 
 ### Phase 4: Polish
@@ -115,7 +115,7 @@
 
 ### PR Rules
 1. هیچ وقت مستقیم به برنچ اصلی کامیت نزنید
-2. همیشه "علی شامنصوری" را به عنوان بررسی کنید تگ کنید
+2. همیشه "علی شامنصوری" را به عنوان ناظر تگ کنید
 3. دسکریپشن باید از الگو کامیت ها و برنچ ها پیروی کند
 4. بیلد و تست گرفتن پروژه قبل از مرج
 
